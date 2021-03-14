@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
@@ -26,7 +27,7 @@ class ParameterTypes
      * Returns true when data type is primitive data type that can be mapped to Symfony configuration tree
      * builder or a valid class that exists.
      */
-    public static function isSupportedType(string $type) : bool
+    public static function isSupportedType(string $type): bool
     {
         return \in_array($type, self::SUPPORTED_PRIMITIVE_TYPES) || \class_exists($type);
     }

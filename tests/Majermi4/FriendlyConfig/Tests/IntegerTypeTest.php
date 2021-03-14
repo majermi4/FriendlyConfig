@@ -8,6 +8,9 @@ use Majermi4\FriendlyConfig\Tests\Util\BaseTestConfig;
 
 class IntegerTypeTest extends ConfigurationTestCase
 {
+    /**
+     * {@inheritDoc}
+     */
     public function validConfigurationProvider(): array
     {
         return [
@@ -20,6 +23,9 @@ class IntegerTypeTest extends ConfigurationTestCase
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function simpleInteger(): array
     {
         $configObject = new class(5) extends BaseTestConfig {
@@ -33,6 +39,9 @@ class IntegerTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableInteger(): array
     {
         $configObject = new class(null) extends BaseTestConfig {
@@ -46,6 +55,9 @@ class IntegerTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableIntegerWithDefault(): array
     {
         $configObject = new class(15) extends BaseTestConfig {
@@ -59,6 +71,9 @@ class IntegerTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function integerWithDefault(): array
     {
         $configObject = new class(15) extends BaseTestConfig {
@@ -72,6 +87,9 @@ class IntegerTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableIntegerWithDefaultOmitted(): array
     {
         $configObject = new class(10) extends BaseTestConfig {
@@ -84,6 +102,9 @@ class IntegerTypeTest extends ConfigurationTestCase
         return [$configObject, []];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function integerWithDefaultOmitted(): array
     {
         $configObject = new class(10) extends BaseTestConfig {

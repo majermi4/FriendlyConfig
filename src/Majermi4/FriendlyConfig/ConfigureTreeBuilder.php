@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Webmozart\Assert\Assert;
 
 class ConfigureTreeBuilder
 {
@@ -27,10 +28,14 @@ class ConfigureTreeBuilder
     public function __invoke(TreeBuilder $treeBuilder): void
     {
         $rootNode = $treeBuilder->getRootNode();
+        Assert::isInstanceOf($rootNode, ArrayNodeDefinition::class);
 
         $this->configureClassNode($this->configClass, $rootNode);
     }
 
+    /**
+     * @param class-string $configClass
+     */
     private function configureClassNode(string $configClass, ArrayNodeDefinition $nodeDefinition): void
     {
         $classReflection = new \ReflectionClass($configClass);
@@ -47,9 +52,11 @@ class ConfigureTreeBuilder
         }
 
         foreach ($parameters as $parameter) {
-            $parameterType = $parameter->getType()->getName();
+            $parameterType = $parameter->getType();
+            Assert::notNull($parameterType);
+            $parameterTypeName = $parameterType->getName();
             $childrenNodeBuilder = $nodeDefinition->children();
-            switch ($parameterType) {
+            switch ($parameterTypeName) {
                 case ParameterTypes::INT:
                     $this->configureSharedOptions($parameter, $childrenNodeBuilder->integerNode($parameter->name));
                     break;
@@ -66,7 +73,7 @@ class ConfigureTreeBuilder
                     $this->configureArray($parameter, $childrenNodeBuilder);
                     break;
                 default:
-                    if (!\class_exists($parameterType)) {
+                    if (!\class_exists($parameterTypeName)) {
                         throw new \LogicException('3');
                     }
                     $this->configureNestedClass($parameter, $childrenNodeBuilder);
@@ -93,11 +100,12 @@ class ConfigureTreeBuilder
             case ParameterTypes::FLOAT:
                 $arrayNode->floatPrototype();
                 break;
-            //case 'array': $arrayNode->arrayPrototype(); break;
+            case ParameterTypes::ARRAY:
+                throw new \LogicException('Nesting arrays inside arrays is not supported.');
             default:
-                return; // TODO
-//                $this->configureNestedClass();
-                break;
+                $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
+                $this->configureSharedOptions($parameter, $arrayNode);
+                return;
         }
 
         $this->configureSharedOptions($parameter, $arrayNode);
@@ -119,7 +127,6 @@ class ConfigureTreeBuilder
         $parameterIsOptional = $parameter->isOptional();
         $parameterHasDefaultValue = $parameter->isDefaultValueAvailable();
         $parameterAllowsNull = $parameter->allowsNull();
-        $parameterType = $parameter->getType()->getName();
 
         if (!$parameterAllowsNull && !$parameterIsOptional) {
             $nodeDefinition->isRequired();
@@ -128,13 +135,5 @@ class ConfigureTreeBuilder
         if ($parameterHasDefaultValue && $addDefaultValueIfApplicable) {
             $nodeDefinition->defaultValue($parameter->getDefaultValue());
         }
-
-//        if (!$parameter->isOptional()) {
-//            $nodeDefinition->isRequired();
-//        } else if (null !== $parameter->getDefaultValue()) {
-//            $nodeDefinition->defaultValue($parameter->getDefaultValue());
-//        } else if ($parameter->allowsNull()) {
-//            $nodeDefinition->defaultNull();
-//        }
     }
 }
