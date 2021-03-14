@@ -66,7 +66,7 @@ class Settings
 }
 ```
 
-The following few lines will convert your pure PHP objects into valid Symfony Configuration definition. On top of that, the processed configuration values are used to initialize your pure PHP objects so you can easily access the configured values. You can choose to register the initialised config objects as services which will allow you to easily access the config values anywhere in your application.
+The following few lines will convert your pure PHP objects into valid Symfony configuration that defines schema of your bundle configuration. On top of that, the processed configuration values are used to initialize your pure PHP objects so you can easily access the configured values. You can choose to register the initialised config objects as services which will allow you to easily access the initialised config objects anywhere in your application.
 
 ```php
 use Symfony\Component\DependencyInjection\ContainerBuilder;
