@@ -5,7 +5,8 @@
     "require": {
         "symfony/config": "^5.0",
         "php": "^7.4|^8.0",
-        "kdyby/parse-use-statements": "^0.2.0"
+        "kdyby/parse-use-statements": "^0.2.0",
+        "webmozart/assert": "^1.10"
     },
     "license": "MIT",
     "autoload": {
@@ -23,10 +24,11 @@
     "require-dev": {
         "phpstan/phpstan": "^0.12.81",
         "phpunit/phpunit": "^9.5",
-        "friendsofphp/php-cs-fixer": "^2.18"
+        "friendsofphp/php-cs-fixer": "^2.18",
+        "phpstan/phpstan-webmozart-assert": "^0.12.12"
     },
     "scripts": {
-        "analyse" : "vendor/bin/phpstan analyse --level 8 src tests",
+        "analyse" : "vendor/bin/phpstan analyse -c phpstan.neon",
         "test" : "vendor/bin/phpunit tests",
         "cs-fix-src" : "./vendor/bin/php-cs-fixer fix src --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison --allow-risky=yes",
         "cs-fix-tests" : "./vendor/bin/php-cs-fixer fix tests --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison --allow-risky=yes"
