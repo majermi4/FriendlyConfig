@@ -93,8 +93,7 @@ class ConfigureTreeBuilder
             case ParameterTypes::FLOAT:
                 $arrayNode->floatPrototype();
                 break;
-            case ParameterTypes::ARRAY:
-                throw new \LogicException('Nesting arrays inside arrays is not supported.');
+            //case 'array': $arrayNode->arrayPrototype(); break;
             default:
                 return; // TODO
 //                $this->configureNestedClass();

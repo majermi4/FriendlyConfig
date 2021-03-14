@@ -75,9 +75,9 @@ You can register the initialised config objects as services which will allow you
 ```php
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use majermi4\FriendlyConfig\FriendlyConfiguration;
-use majermi4\FriendlyConfig\InitializeConfigObject;
-use majermi4\FriendlyConfig\InitializeConfigServiceDefinition;
+use Majermi4\FriendlyConfig\FriendlyConfiguration;
+use Majermi4\FriendlyConfig\InitializeConfigObject;
+use Majermi4\FriendlyConfig\InitializeConfigServiceDefinition;
 
 class MyBundleExtension extends Extension
 {

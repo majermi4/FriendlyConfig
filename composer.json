@@ -4,13 +4,14 @@
     "type": "library",
     "require": {
         "symfony/config": "^5.0",
-        "php": "^7.4|^8.0"
+        "php": "^7.4|^8.0",
+        "kdyby/parse-use-statements": "^0.2.0"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "majermi4\\FriendlyConfig\\": "src/majermi4/FriendlyConfig/",
-            "majermi4\\FriendlyConfig\\Tests\\": "tests/majermi4/FriendlyConfig/Tests"
+            "Majermi4\\FriendlyConfig\\": "src/Majermi4/FriendlyConfig/",
+            "Majermi4\\FriendlyConfig\\Tests\\": "tests/Majermi4/FriendlyConfig/Tests"
         }
     },
     "authors": [
