@@ -1,10 +1,10 @@
-# Friendly Config
+# :seedling: Friendly Config _(easier way to write Symfony Configuration)
+
+> Provides a friendlier way to define [Symfony configuration](https://symfony.com/doc/current/components/config/definition.html) using plain old PHP objects.
 
 ![tests](https://github.com/majermi4/friendly-config/actions/workflows/php.yml/badge.svg)
 
 > :construction: This project is currently in progress, not suited for production yet :construction:
-
-Provides a friendlier way to define Symfony configuration using plain old PHP objects.
 
 Instead of having to write configuration such as this:
 
