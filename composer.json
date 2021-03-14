@@ -2,10 +2,16 @@
     "name": "majermi4/friendly-config",
     "description": "Provides a friendlier way to define Symfony configuration using plain old PHP objects.",
     "type": "library",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/majermi4/ParseUseStatements"
+        }
+    ],
     "require": {
         "symfony/config": "^5.0",
         "php": "^7.4|^8.0",
-        "kdyby/parse-use-statements": "^0.2.0",
+        "kdyby/parse-use-statements": "dev-patch-1",
         "webmozart/assert": "^1.10"
     },
     "license": "MIT",
