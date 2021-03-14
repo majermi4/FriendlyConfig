@@ -6,6 +6,8 @@
 
 > :construction: This project is currently in progress, not suited for production yet :construction:
 
+We :heart: the Symfony configuration component! It provides schema, validation, documentation and many more features to your bundle configs. However, many of us don't like writing it :neutral_face: ... What if we could change that?
+
 Instead of having to write configuration such as this:
 
 ```php
@@ -66,7 +68,9 @@ class Settings
 }
 ```
 
-The following few lines will convert your pure PHP objects into valid Symfony configuration that defines schema of your bundle configuration. On top of that, the processed configuration values are used to initialize your pure PHP objects so you can easily access the configured values. You can choose to register the initialised config objects as services which will allow you to easily access the initialised config objects anywhere in your application.
+The following few lines will convert your pure PHP objects into valid Symfony configuration that defines schema of your bundle configuration. On top of that, the processed configuration values are used to initialize your pure PHP objects so you can easily access the processed values. 
+
+You can register the initialised config objects as services which will allow you to easily access the initialised config objects anywhere in your application.
 
 ```php
 use Symfony\Component\DependencyInjection\ContainerBuilder;
