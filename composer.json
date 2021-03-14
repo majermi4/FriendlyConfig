@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "symfony/config": "^5.0",
-        "php": "^7.4"
+        "php": "^7.4|^8.0"
     },
     "license": "MIT",
     "autoload": {
