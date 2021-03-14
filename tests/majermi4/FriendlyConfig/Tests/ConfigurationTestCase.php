@@ -21,16 +21,19 @@ abstract class ConfigurationTestCase extends TestCase
     {
         $configuration = FriendlyConfiguration::fromClass(get_class($configObject), 'TestConfig');
 
-        $parsedConfig = (new Processor())->processConfiguration(
+        $processedConfig = (new Processor())->processConfiguration(
             $configuration,
             [$configValues]
         );
 
-        $parsedConfigObject = InitializeConfigObject::fromParsedConfig(get_class($configObject), $parsedConfig);
+        $processedConfigObject = InitializeConfigObject::fromProcessedConfig(get_class($configObject), $processedConfig);
 
-        static::assertTrue($configObject->equals($parsedConfigObject), 'Expected config object value does not match the processed config values.');
+        static::assertTrue($configObject->equals($processedConfigObject), 'Expected config object value does not match the processed config values.');
     }
 
+    /**
+     * @return array<string,array<mixed>>
+     */
     public function validConfigurationProvider(): array
     {
         return [];

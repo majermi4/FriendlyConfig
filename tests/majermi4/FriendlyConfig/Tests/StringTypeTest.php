@@ -8,6 +8,9 @@ use Majermi4\FriendlyConfig\Tests\Util\BaseTestConfig;
 
 class StringTypeTest extends ConfigurationTestCase
 {
+    /**
+     * {@inheritDoc}
+     */
     public function validConfigurationProvider(): array
     {
         return [
@@ -20,6 +23,9 @@ class StringTypeTest extends ConfigurationTestCase
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function simpleString(): array
     {
         $configObject = new class('foo') extends BaseTestConfig {
@@ -33,6 +39,9 @@ class StringTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableString(): array
     {
         $configObject = new class(null) extends BaseTestConfig {
@@ -46,6 +55,9 @@ class StringTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableStringWithDefault(): array
     {
         $configObject = new class('foo') extends BaseTestConfig {
@@ -59,6 +71,9 @@ class StringTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function stringWithDefault(): array
     {
         $configObject = new class('foo') extends BaseTestConfig {
@@ -72,6 +87,9 @@ class StringTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableStringWithDefaultOmitted(): array
     {
         $configObject = new class('foo') extends BaseTestConfig {
@@ -84,6 +102,9 @@ class StringTypeTest extends ConfigurationTestCase
         return [$configObject, []];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function stringWithDefaultOmitted(): array
     {
         $configObject = new class('foo') extends BaseTestConfig {

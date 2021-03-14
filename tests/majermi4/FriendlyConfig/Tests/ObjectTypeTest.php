@@ -9,6 +9,9 @@ use Majermi4\FriendlyConfig\Tests\Util\BaseTestConfig;
 
 class ObjectTypeTest extends ConfigurationTestCase
 {
+    /**
+     * {@inheritDoc}
+     */
     public function validConfigurationProvider(): array
     {
         return [
@@ -21,6 +24,9 @@ class ObjectTypeTest extends ConfigurationTestCase
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function simpleObject(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {
@@ -31,13 +37,16 @@ class ObjectTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                'singleParam' => 'foo'
-            ]
+                'singleParam' => 'foo',
+            ],
         ];
 
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableObject(): array
     {
         $configObject = new class(null) extends BaseTestConfig {
@@ -51,6 +60,9 @@ class ObjectTypeTest extends ConfigurationTestCase
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableObjectWithDefault(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {
@@ -61,13 +73,16 @@ class ObjectTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                'singleParam' => 'foo'
-            ]
+                'singleParam' => 'foo',
+            ],
         ];
 
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function objectWithDefault(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {
@@ -78,13 +93,16 @@ class ObjectTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                'singleParam' => 'foo'
-            ]
+                'singleParam' => 'foo',
+            ],
         ];
 
         return [$configObject, $configValues];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function nullableObjectWithDefaultOmitted(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {
@@ -97,6 +115,9 @@ class ObjectTypeTest extends ConfigurationTestCase
         return [$configObject, []];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function objectWithDefaultOmitted(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {

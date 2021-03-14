@@ -9,13 +9,19 @@ use Majermi4\FriendlyConfig\Tests\Fixtures\ScalarTypesConfig;
 
 class FunctionalTest extends ConfigurationTestCase
 {
+    /**
+     * {@inheritDoc}
+     */
     public function validConfigurationProvider(): array
     {
         return [
-            $this->validFixtureConfiguration(),
+            'Test fixture config' => $this->validFixtureConfiguration(),
         ];
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function validFixtureConfiguration(): array
     {
         $configObject = new FixtureConfig(
@@ -25,7 +31,9 @@ class FunctionalTest extends ConfigurationTestCase
                 'some string value',
                 5.3,
                 false,
-            )
+            ),
+            [],
+            null,
         );
 
         $validConfigValues = [

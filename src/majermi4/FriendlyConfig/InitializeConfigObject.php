@@ -7,10 +7,14 @@ namespace Majermi4\FriendlyConfig;
 class InitializeConfigObject
 {
     /**
-     * @param class-string        $configClass
-     * @param array<string,mixed> $parsedConfig
+     * @template T
+     *
+     * @param class-string<T>     $configClass
+     * @param array<string,mixed> $processedConfig
+     *
+     * @return T
      */
-    public static function fromParsedConfig(string $configClass, array $parsedConfig): object
+    public static function fromProcessedConfig(string $configClass, array $processedConfig): object
     {
         $configClassReflection = new \ReflectionClass($configClass);
         $constructor = $configClassReflection->getConstructor();
@@ -19,19 +23,26 @@ class InitializeConfigObject
         $resolvedParameters = [];
 
         foreach ($parameters as $parameter) {
-            if ($parameter->isOptional() && !\array_key_exists($parameter->getName(), $parsedConfig)) {
+            if ($parameter->isOptional() && !\array_key_exists($parameter->getName(), $processedConfig)) {
                 break;
             }
 
-            if (!isset($parsedConfig[$parameter->getName()])) {
+            $parameterName = $parameter->name;
+            $parameterType = $parameter->getType()->getName();
+            if (!isset($processedConfig[$parameterName])) {
                 $resolvedParameter = null;
-            } else if (class_exists($parameter->getType()->getName())) {
-                $resolvedParameter = self::fromParsedConfig($parameter->getType()->getName(), $parsedConfig[$parameter->getName()]);
+            } elseif (\class_exists($parameterType)) {
+                $resolvedParameter = self::fromProcessedConfig($parameterType, $processedConfig[$parameterName]);
+            } elseif (ParameterTypes::ARRAY === $parameterType && \class_exists(PhpDocTypeParser::getParameterArrayItemType($parameter))) {
+                $resolvedParameter = [];
+                foreach ($processedConfig[$parameterName] as $idx => $item) {
+                    $resolvedParameter[$idx] = self::fromProcessedConfig(PhpDocTypeParser::getParameterArrayItemType($parameter), $item);
+                }
             } else {
-                $resolvedParameter = $parsedConfig[$parameter->getName()];
+                $resolvedParameter = $processedConfig[$parameterName];
             }
 
-            $resolvedParameters[$parameter->getName()] = $resolvedParameter;
+            $resolvedParameters[$parameterName] = $resolvedParameter;
         }
 
         return $configClassReflection->newInstanceArgs($resolvedParameters);

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig\Tests;
 
+use Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig;
 use Majermi4\FriendlyConfig\Tests\Util\BaseTestConfig;
 
-class ArrayOfStringsTypeTest extends ConfigurationTestCase
+class ArrayOfObjectsTypeTest extends ConfigurationTestCase
 {
     /**
      * {@inheritDoc}
@@ -14,30 +15,39 @@ class ArrayOfStringsTypeTest extends ConfigurationTestCase
     public function validConfigurationProvider(): array
     {
         return [
-            'non-nullable array of strings' => $this->simpleArrayOfStrings(),
-            'nullable array of strings' => $this->nullableArrayOfStrings(),
-            'nullable array of strings with default, value provided' => $this->nullableArrayOfStringsWithDefault(),
-            'non-nullable array of strings with default, value provided' => $this->arrayOfStringsWithDefault(),
-            'nullable array of strings with default, value omitted' => $this->nullableArrayOfStringsWithDefaultOmitted(),
-            'non-nullable array of strings with default, value omitted' => $this->arrayOfStringsWithDefaultOmitted(),
+            'non-nullable array of objects' => $this->simpleArrayOfObjects(),
+            'nullable array of objects' => $this->nullableArrayOfObjects(),
+            'nullable array of objects with default, value provided' => $this->nullableArrayOfObjectsWithDefault(),
+            'non-nullable array of objects with default, value provided' => $this->arrayOfObjectsWithDefault(),
+            'nullable array of objects with default, value omitted' => $this->nullableArrayOfObjectsWithDefaultOmitted(),
+            'non-nullable array of objects with default, value omitted' => $this->arrayOfObjectsWithDefaultOmitted(),
         ];
     }
 
     /**
      * @return array<mixed>
      */
-    public function simpleArrayOfStrings(): array
+    public function simpleArrayOfObjects(): array
     {
-        $configObject = new class(['foo']) extends BaseTestConfig {
+        $expectedParamValue = [
+            new SingleParamConfig('foo'),
+            new SingleParamConfig('bar'),
+        ];
+        $configObject = new class($expectedParamValue) extends BaseTestConfig {
             /**
-             * @param array<string> $param
+             * @param array<SingleParamConfig> $param
              */
             public function __construct(array $param)
             {
                 parent::__construct(...func_get_args());
             }
         };
-        $configValues = ['param' => ['foo']];
+        $configValues = [
+            'param' => [
+                ['singleParam' => 'foo'],
+                ['singleParam' => 'bar'],
+            ],
+        ];
 
         return [$configObject, $configValues];
     }
@@ -45,7 +55,7 @@ class ArrayOfStringsTypeTest extends ConfigurationTestCase
     /**
      * @return array<mixed>
      */
-    public function nullableArrayOfStrings(): array
+    public function nullableArrayOfObjects(): array
     {
         $configObject = new class([]) extends BaseTestConfig {
             /**
@@ -64,7 +74,7 @@ class ArrayOfStringsTypeTest extends ConfigurationTestCase
     /**
      * @return array<mixed>
      */
-    public function nullableArrayOfStringsWithDefault(): array
+    public function nullableArrayOfObjectsWithDefault(): array
     {
         $configObject = new class(['foo']) extends BaseTestConfig {
             /**
@@ -83,7 +93,7 @@ class ArrayOfStringsTypeTest extends ConfigurationTestCase
     /**
      * @return array<mixed>
      */
-    public function arrayOfStringsWithDefault(): array
+    public function arrayOfObjectsWithDefault(): array
     {
         $configObject = new class(['foo']) extends BaseTestConfig {
             /**
@@ -102,7 +112,7 @@ class ArrayOfStringsTypeTest extends ConfigurationTestCase
     /**
      * @return array<mixed>
      */
-    public function nullableArrayOfStringsWithDefaultOmitted(): array
+    public function nullableArrayOfObjectsWithDefaultOmitted(): array
     {
         $configObject = new class(['foo']) extends BaseTestConfig {
             /**
@@ -120,7 +130,7 @@ class ArrayOfStringsTypeTest extends ConfigurationTestCase
     /**
      * @return array<mixed>
      */
-    public function arrayOfStringsWithDefaultOmitted(): array
+    public function arrayOfObjectsWithDefaultOmitted(): array
     {
         $configObject = new class(['foo']) extends BaseTestConfig {
             /**
