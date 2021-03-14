@@ -1,4 +1,4 @@
-# :seedling: Friendly Config _(easier way to write Symfony Configuration)
+# :seedling: Friendly Config _(Easy way to write Symfony Configuration)_
 
 > Provides a friendlier way to define [Symfony configuration](https://symfony.com/doc/current/components/config/definition.html) using plain old PHP objects.
 
