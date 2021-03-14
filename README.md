@@ -6,7 +6,7 @@
 
 > :construction: This project is currently in progress, not suited for production yet :construction:
 
-We love the Symfony configuration component! :heart: It provides schema, validation, documentation and many more features to your bundle configs. However, many of us don't like writing it :neutral_face: ... What if we could change that?
+We love the Symfony configuration component! :heart: It provides schema, validation, documentation and many more features to our bundle configs. However, many of us don't like writing it :neutral_face: ... What if we could change that?
 
 Instead of having to write configuration such as this:
 
