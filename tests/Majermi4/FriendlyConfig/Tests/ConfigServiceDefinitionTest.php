@@ -6,7 +6,7 @@ namespace Majermi4\FriendlyConfig\Tests;
 
 use Majermi4\FriendlyConfig\FriendlyConfiguration;
 use Majermi4\FriendlyConfig\InitializeConfigObject;
-use Majermi4\FriendlyConfig\InitializeConfigServiceDefinition;
+use Majermi4\FriendlyConfig\RegisterConfigService;
 use Majermi4\FriendlyConfig\Tests\Fixtures\FixtureConfig;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
@@ -34,9 +34,8 @@ class ConfigServiceDefinitionTest extends TestCase
 
         // Register config object as a service
         $containerBuilder = new ContainerBuilder();
-        $configServiceDefinition = InitializeConfigServiceDefinition::fromProcessedConfig(FixtureConfig::class, $processedConfig);
+        $configServiceDefinition = RegisterConfigService::fromProcessedConfig(FixtureConfig::class, $processedConfig, $containerBuilder);
         $configServiceDefinition->setPublic(true);
-        $containerBuilder->setDefinition(FixtureConfig::class, $configServiceDefinition);
 
         $containerBuilder->compile();
         static::assertTrue($containerBuilder->isCompiled());

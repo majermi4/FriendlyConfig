@@ -77,7 +77,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Majermi4\FriendlyConfig\FriendlyConfiguration;
 use Majermi4\FriendlyConfig\InitializeConfigObject;
-use Majermi4\FriendlyConfig\InitializeConfigServiceDefinition;
+use Majermi4\FriendlyConfig\RegisterConfigService;
 
 class MyBundleExtension extends Extension
 {
@@ -88,9 +88,8 @@ class MyBundleExtension extends Extension
         // Initialise config object from processed config
         $initialisedConfig = InitializeConfigObject::fromProcessedConfig(MyConfig::class, $config);
 
-        // Register config object with processed values as a service 
-        $configServiceDefinition = InitializeConfigServiceDefinition::fromProcessedConfig(MyConfig::class, $config);
-        $container->setDefinition(MyConfig::class, $configServiceDefinition);
+        // Or ... register config object with processed values as a service 
+        RegisterConfigService::fromProcessedConfig(MyConfig::class, $config, $container);
     }
 }
 ```
