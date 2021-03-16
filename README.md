@@ -90,7 +90,7 @@ class MyBundleExtension extends Extension
 
         // Register config object with processed values as a service 
         $configServiceDefinition = InitializeConfigServiceDefinition::fromProcessedConfig(MyConfig::class, $config);
-        $container->addDefinitions([$configServiceDefinition]);
+        $container->setDefinition(MyConfig::class, $configServiceDefinition);
     }
 }
 ```

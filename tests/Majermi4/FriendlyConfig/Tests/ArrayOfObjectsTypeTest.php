@@ -86,8 +86,8 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                ['singleParam' => 'foo']
-            ]
+                ['singleParam' => 'foo'],
+            ],
         ];
 
         return [$configObject, $configValues];
@@ -109,8 +109,8 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                ['singleParam' => 'foo']
-            ]
+                ['singleParam' => 'foo'],
+            ],
         ];
 
         return [$configObject, $configValues];
