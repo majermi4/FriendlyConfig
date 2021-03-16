@@ -46,6 +46,8 @@ class PhpDocTypeParser
             return $useStatements[$shortClassName];
         }
 
+        die($classReflection->getFileName());
+
         $className = $classReflection->getNamespaceName().'\\'.$shortClassName;
         if (!\class_exists($className)) {
             throw new \LogicException($className.' not found.');
