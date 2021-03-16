@@ -33,6 +33,9 @@ class PhpDocTypeParser
         return self::getClassNameFromShortName($arrayItemType, $classReflection);
     }
 
+    /**
+     * @param class-string $shortClassName
+     */
     private static function getClassNameFromShortName(string $shortClassName, \ReflectionClass $classReflection): string
     {
         if ($classReflection->isAnonymous()) {
@@ -42,8 +45,6 @@ class PhpDocTypeParser
             $useStatements = UseStatements::getUseStatements($classReflection);
         }
 
-        var_dump($shortClassName);
-        var_dump($useStatements);
         if (\array_key_exists($shortClassName, $useStatements)) {
             return $useStatements[$shortClassName];
         }
