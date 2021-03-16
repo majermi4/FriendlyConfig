@@ -20,7 +20,6 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
             'nullable array of objects with default, value provided' => $this->nullableArrayOfObjectsWithDefault(),
             'non-nullable array of objects with default, value provided' => $this->arrayOfObjectsWithDefault(),
             'nullable array of objects with default, value omitted' => $this->nullableArrayOfObjectsWithDefaultOmitted(),
-            'non-nullable array of objects with default, value omitted' => $this->arrayOfObjectsWithDefaultOmitted(),
         ];
     }
 
@@ -59,7 +58,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
     {
         $configObject = new class([]) extends BaseTestConfig {
             /**
-             * @param array<string>|null $param
+             * @param array<SingleParamConfig>|null $param
              */
             public function __construct(?array $param)
             {
@@ -76,16 +75,20 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
      */
     public function nullableArrayOfObjectsWithDefault(): array
     {
-        $configObject = new class(['foo']) extends BaseTestConfig {
+        $configObject = new class([new SingleParamConfig('foo')]) extends BaseTestConfig {
             /**
-             * @param array<string>|null $param
+             * @param array<SingleParamConfig>|null $param
              */
-            public function __construct(?array $param = ['bar'])
+            public function __construct(?array $param)
             {
-                parent::__construct(...func_get_args());
+                parent::__construct(...[$param ?? [new SingleParamConfig('bar')]]);
             }
         };
-        $configValues = ['param' => ['foo']];
+        $configValues = [
+            'param' => [
+                ['singleParam' => 'foo']
+            ]
+        ];
 
         return [$configObject, $configValues];
     }
@@ -95,16 +98,20 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
      */
     public function arrayOfObjectsWithDefault(): array
     {
-        $configObject = new class(['foo']) extends BaseTestConfig {
+        $configObject = new class([new SingleParamConfig('foo')]) extends BaseTestConfig {
             /**
-             * @param array<string> $param
+             * @param array<SingleParamConfig> $param
              */
-            public function __construct(array $param = ['bar'])
+            public function __construct(array $param)
             {
-                parent::__construct(...func_get_args());
+                parent::__construct(...[$param ?? [new SingleParamConfig('bar')]]);
             }
         };
-        $configValues = ['param' => ['foo']];
+        $configValues = [
+            'param' => [
+                ['singleParam' => 'foo']
+            ]
+        ];
 
         return [$configObject, $configValues];
     }
@@ -114,29 +121,11 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
      */
     public function nullableArrayOfObjectsWithDefaultOmitted(): array
     {
-        $configObject = new class(['foo']) extends BaseTestConfig {
+        $configObject = new class([]) extends BaseTestConfig {
             /**
-             * @param array<string>|null $param
+             * @param array<SingleParamConfig>|null $param
              */
-            public function __construct(?array $param = ['foo'])
-            {
-                parent::__construct(...func_get_args());
-            }
-        };
-
-        return [$configObject, []];
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function arrayOfObjectsWithDefaultOmitted(): array
-    {
-        $configObject = new class(['foo']) extends BaseTestConfig {
-            /**
-             * @param array<string> $param
-             */
-            public function __construct(array $param = ['foo'])
+            public function __construct(?array $param)
             {
                 parent::__construct(...func_get_args());
             }
