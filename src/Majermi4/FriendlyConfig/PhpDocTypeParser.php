@@ -42,13 +42,14 @@ class PhpDocTypeParser
             $useStatements = UseStatements::getUseStatements($classReflection);
         }
 
+        var_dump($shortClassName);
+        var_dump($useStatements);
         if (\array_key_exists($shortClassName, $useStatements)) {
             return $useStatements[$shortClassName];
         }
 
         $className = $classReflection->getNamespaceName().'\\'.$shortClassName;
         if (!\class_exists($className)) {
-            var_dump($classReflection);
             throw new \LogicException($className.' not found.');
         }
 
