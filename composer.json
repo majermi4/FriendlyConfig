@@ -31,7 +31,7 @@
     "scripts": {
         "analyse" : "vendor/bin/phpstan analyse -c phpstan.neon",
         "test" : "vendor/bin/phpunit tests",
-        "cs-fix-src" : "./vendor/bin/php-cs-fixer fix src --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison --allow-risky=yes",
-        "cs-fix-tests" : "./vendor/bin/php-cs-fixer fix tests --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison --allow-risky=yes"
+        "cs-fix-src" : "./vendor/bin/php-cs-fixer fix src --rules=@Symfony --allow-risky=yes",
+        "cs-fix-tests" : "./vendor/bin/php-cs-fixer fix tests --rules=@Symfony --allow-risky=yes"
     }
 }

@@ -107,6 +107,7 @@ class ConfigureTreeBuilder
                 Assert::classExists($arrayItemType); // TODO: Change to exception
                 $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
                 $this->configureSharedOptions($parameter, $arrayNode);
+
                 return;
         }
 
