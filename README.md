@@ -3,6 +3,8 @@
 > Provides a friendlier way to define [Symfony configuration](https://symfony.com/doc/current/components/config/definition.html) using plain old PHP objects.
 
 ![tests](https://github.com/majermi4/FriendlyConfig/actions/workflows/php.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/majermi4/FriendlyConfig/blob/main/LICENSE)
+
 
 We love the Symfony configuration component! :heart: It provides schema, validation, documentation and many more features to our bundle configs. However, many of us don't like writing it :neutral_face: ... What if we could change that?
 
