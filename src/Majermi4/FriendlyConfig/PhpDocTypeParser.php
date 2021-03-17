@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
-use Kdyby\ParseUseStatements\UseStatements;
+use Nette\Utils\Reflection;
 use Webmozart\Assert\Assert;
 
 class PhpDocTypeParser
@@ -12,10 +12,11 @@ class PhpDocTypeParser
     public static function getParameterArrayItemType(\ReflectionParameter $parameter): string
     {
         $classReflection = $parameter->getDeclaringClass();
+        Assert::notNull($classReflection); // TODO: Change to exception
         $constructor = $classReflection->getConstructor();
-        Assert::notNull($constructor);
+        Assert::notNull($constructor); // TODO: Change to exception
         $docComment = $constructor->getDocComment();
-        Assert::notNull($docComment);
+        Assert::string($docComment); // TODO: Change to exception
 
         $outputArray = [];
         $success = preg_match('/@param\s+(array|iterable)<(.*,)?\s*(.+)>(\|null)?\s+\$'.$parameter->name.'/', $docComment, $outputArray);
@@ -30,30 +31,6 @@ class PhpDocTypeParser
             return $arrayItemType;
         }
 
-        return self::getClassNameFromShortName($arrayItemType, $classReflection);
-    }
-
-    /**
-     * @param class-string $shortClassName
-     */
-    private static function getClassNameFromShortName(string $shortClassName, \ReflectionClass $classReflection): string
-    {
-        if ($classReflection->isAnonymous()) {
-            $useStatementsWrapped = UseStatements::parseUseStatements(file_get_contents($classReflection->getFileName()));
-            $useStatements = reset($useStatementsWrapped);
-        } else {
-            $useStatements = UseStatements::getUseStatements($classReflection);
-        }
-
-        if (\array_key_exists($shortClassName, $useStatements)) {
-            return $useStatements[$shortClassName];
-        }
-
-        $className = $classReflection->getNamespaceName().'\\'.$shortClassName;
-        if (!\class_exists($className)) {
-            throw new \LogicException($className.' not found.');
-        }
-
-        return $className;
+        return Reflection::expandClassName($arrayItemType, $classReflection);
     }
 }
