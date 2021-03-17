@@ -4,5 +4,5 @@
 /.php_cs.cache
 /.phpunit.result.cache
 /composer.lock
-/build
+/coverage.xml
 /.phpunit.cache
