@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Webmozart\Assert\Assert;
+
 class InitializeConfigObject
 {
     /**
-     * @template T
+     * @template T of object
      *
      * @param class-string<T>     $configClass
      * @param array<string,mixed> $processedConfig
      *
-     * @return T
+     * @return T of object
      */
     public static function fromProcessedConfig(string $configClass, array $processedConfig): object
     {
         $configClassReflection = new \ReflectionClass($configClass);
         $constructor = $configClassReflection->getConstructor();
+        Assert::notNull($constructor); // TODO: Change to exception
         $parameters = $constructor->getParameters();
 
         $resolvedParameters = [];
@@ -28,6 +31,7 @@ class InitializeConfigObject
             }
 
             $parameterName = $parameter->name;
+            /* @phpstan-ignore-next-line */
             $parameterType = $parameter->getType()->getName();
             if (!isset($processedConfig[$parameterName])) {
                 $resolvedParameter = null;
@@ -42,7 +46,7 @@ class InitializeConfigObject
                 $resolvedParameter = $processedConfig[$parameterName];
             }
 
-            $resolvedParameters[$parameterName] = $resolvedParameter;
+            $resolvedParameters[] = $resolvedParameter;
         }
 
         return $configClassReflection->newInstanceArgs($resolvedParameters);

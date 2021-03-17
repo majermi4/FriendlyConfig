@@ -7,6 +7,9 @@ namespace Majermi4\FriendlyConfig\Tests\Util;
 use ArrayAccess;
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements ArrayAccess<string,mixed>
+ */
 class BaseTestConfig implements ArrayAccess
 {
     /**

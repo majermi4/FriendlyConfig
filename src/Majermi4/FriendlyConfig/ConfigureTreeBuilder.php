@@ -53,7 +53,8 @@ class ConfigureTreeBuilder
 
         foreach ($parameters as $parameter) {
             $parameterType = $parameter->getType();
-            Assert::notNull($parameterType);
+            Assert::notNull($parameterType); // TODO: Change to exception
+            /* @phpstan-ignore-next-line */
             $parameterTypeName = $parameterType->getName();
             $childrenNodeBuilder = $nodeDefinition->children();
             switch ($parameterTypeName) {
@@ -103,6 +104,7 @@ class ConfigureTreeBuilder
             case ParameterTypes::ARRAY:
                 throw new \LogicException('Nesting arrays inside arrays is not supported.');
             default:
+                Assert::classExists($arrayItemType); // TODO: Change to exception
                 $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
                 $this->configureSharedOptions($parameter, $arrayNode);
                 return;
@@ -119,6 +121,7 @@ class ConfigureTreeBuilder
         // default values for arrays that represent nested objects (so called concrete nodes).
         $this->configureSharedOptions($parameter, $arrayNode, false);
 
+        /* @phpstan-ignore-next-line */
         $this->configureClassNode($parameter->getType()->getName(), $arrayNode);
     }
 

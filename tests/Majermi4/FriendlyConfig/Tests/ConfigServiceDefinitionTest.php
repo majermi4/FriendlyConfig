@@ -40,6 +40,7 @@ class ConfigServiceDefinitionTest extends TestCase
         $containerBuilder->compile();
         static::assertTrue($containerBuilder->isCompiled());
 
+        /** @var FixtureConfig $fixtureConfigService */
         $fixtureConfigService = $containerBuilder->get(FixtureConfig::class);
         $expectedConfigObject = InitializeConfigObject::fromProcessedConfig(FixtureConfig::class, $processedConfig);
         static::assertTrue($expectedConfigObject->equals($fixtureConfigService), 'Registered service is not equal to the expected object values.');
