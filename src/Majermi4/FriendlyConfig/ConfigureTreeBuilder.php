@@ -104,7 +104,7 @@ class ConfigureTreeBuilder
             case ParameterTypes::ARRAY:
                 throw new \LogicException('Nesting arrays inside arrays is not supported.');
             default:
-                //Assert::classExists($arrayItemType); // TODO: Change to exception
+                Assert::classExists($arrayItemType); // TODO: Change to exception
                 $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
                 $this->configureSharedOptions($parameter, $arrayNode);
                 return;
