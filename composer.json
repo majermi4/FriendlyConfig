@@ -2,12 +2,6 @@
     "name": "majermi4/friendly-config",
     "description": "Provides a friendlier way to define Symfony configuration using plain old PHP objects.",
     "type": "library",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/majermi4/ParseUseStatements"
-        }
-    ],
     "require": {
         "symfony/config": "^5.0",
         "symfony/dependency-injection": "^5.0",
