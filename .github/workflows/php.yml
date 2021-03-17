@@ -1,4 +1,4 @@
-name: Build & Tests
+name: Build & PHPStan & PHPUnit
 
 on:
   push:
@@ -34,5 +34,8 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Run test suite
+    - name: Run PHPStan
+      run: composer run-script analyse
+
+    - name: Run PHPUnit
       run: composer run-script test
