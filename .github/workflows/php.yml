@@ -1,4 +1,4 @@
-name: Build & PHPStan & PHPUnit
+name: Build | PHPStan | PHPUnit
 
 on:
   push:
