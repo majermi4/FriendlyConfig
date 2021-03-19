@@ -105,6 +105,7 @@ class ConfigureTreeBuilder
                 throw new \LogicException('Nesting arrays inside arrays is not supported.');
             default:
                 Assert::classExists($arrayItemType); // TODO: Change to exception
+                $arrayNode->useAttributeAsKey('name'); // In order to preserve keys.
                 $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
                 $this->configureSharedOptions($parameter, $arrayNode);
 
