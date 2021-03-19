@@ -37,7 +37,7 @@ class ObjectTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                'singleParam' => 'foo',
+                'single_param' => 'foo',
             ],
         ];
 
@@ -73,7 +73,7 @@ class ObjectTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                'singleParam' => 'foo',
+                'single_param' => 'foo',
             ],
         ];
 
@@ -93,7 +93,7 @@ class ObjectTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                'singleParam' => 'foo',
+                'single_param' => 'foo',
             ],
         ];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Majermi4\FriendlyConfig\Util\StringUtil;
 use Webmozart\Assert\Assert;
 
 class InitializeConfigObject
@@ -26,11 +27,12 @@ class InitializeConfigObject
         $resolvedParameters = [];
 
         foreach ($parameters as $parameter) {
-            if ($parameter->isOptional() && !\array_key_exists($parameter->getName(), $processedConfig)) {
+            $parameterName = StringUtil::toSnakeCase($parameter->name);
+
+            if ($parameter->isOptional() && !\array_key_exists($parameterName, $processedConfig)) {
                 break;
             }
 
-            $parameterName = $parameter->name;
             /* @phpstan-ignore-next-line */
             $parameterType = $parameter->getType()->getName();
             if (!isset($processedConfig[$parameterName])) {

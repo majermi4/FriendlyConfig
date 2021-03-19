@@ -37,12 +37,12 @@ class FunctionalTest extends ConfigurationTestCase
         );
 
         $validConfigValues = [
-            'integerProperty' => 5,
-            'scalarTypesConfig' => [
-                'integerProperty' => 1,
-                'stringProperty' => 'some string value',
-                'floatProperty' => 5.3,
-                'boolProperty' => false,
+            'integer_property' => 5,
+            'scalar_types_config' => [
+                'integer_property' => 1,
+                'string_property' => 'some string value',
+                'float_property' => 5.3,
+                'bool_property' => false,
             ],
         ];
 

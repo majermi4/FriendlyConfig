@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Majermi4\FriendlyConfig\Util\StringUtil;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -56,19 +57,20 @@ class ConfigureTreeBuilder
             Assert::notNull($parameterType); // TODO: Change to exception
             /* @phpstan-ignore-next-line */
             $parameterTypeName = $parameterType->getName();
+            $configParameterName = $configParameterName = StringUtil::toSnakeCase($parameter->name);
             $childrenNodeBuilder = $nodeDefinition->children();
             switch ($parameterTypeName) {
                 case ParameterTypes::INT:
-                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->integerNode($parameter->name));
+                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->integerNode($configParameterName));
                     break;
                 case ParameterTypes::STRING:
-                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->scalarNode($parameter->name));
+                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->scalarNode($configParameterName));
                     break;
                 case ParameterTypes::BOOL:
-                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->booleanNode($parameter->name));
+                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->booleanNode($configParameterName));
                     break;
                 case ParameterTypes::FLOAT:
-                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->floatNode($parameter->name));
+                    $this->configureSharedOptions($parameter, $childrenNodeBuilder->floatNode($configParameterName));
                     break;
                 case ParameterTypes::ARRAY:
                     $this->configureArray($parameter, $childrenNodeBuilder);
@@ -86,7 +88,7 @@ class ConfigureTreeBuilder
     private function configureArray(\ReflectionParameter $parameter, NodeBuilder $nodeBuilder): void
     {
         $arrayItemType = PhpDocTypeParser::getParameterArrayItemType($parameter);
-        $arrayNode = $nodeBuilder->arrayNode($parameter->name);
+        $arrayNode = $nodeBuilder->arrayNode(StringUtil::toSnakeCase($parameter->name));
 
         switch ($arrayItemType) {
             case ParameterTypes::INT:
@@ -117,7 +119,7 @@ class ConfigureTreeBuilder
 
     private function configureNestedClass(\ReflectionParameter $parameter, NodeBuilder $nodeBuilder): void
     {
-        $arrayNode = $nodeBuilder->arrayNode($parameter->name);
+        $arrayNode = $nodeBuilder->arrayNode(StringUtil::toSnakeCase($parameter->name));
 
         // Do not add default value because it is not allowed by Symfony Config Component to add
         // default values for arrays that represent nested objects (so called concrete nodes).
