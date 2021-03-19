@@ -29,8 +29,8 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
     public function simpleArrayOfObjects(): array
     {
         $expectedParamValue = [
-            new SingleParamConfig('foo'),
-            new SingleParamConfig('bar'),
+            'idx1' => new SingleParamConfig('foo'),
+            'idx2' => new SingleParamConfig('bar'),
         ];
         $configObject = new class($expectedParamValue) extends BaseTestConfig {
             /**
@@ -43,8 +43,8 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                ['single_param' => 'foo'],
-                ['single_param' => 'bar'],
+                'idx1' => ['single_param' => 'foo'],
+                'idx2' => ['single_param' => 'bar'],
             ],
         ];
 
@@ -75,7 +75,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
      */
     public function nullableArrayOfObjectsWithDefault(): array
     {
-        $configObject = new class([new SingleParamConfig('foo')]) extends BaseTestConfig {
+        $configObject = new class(['idx' => new SingleParamConfig('foo')]) extends BaseTestConfig {
             /**
              * @param array<\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig>|null $param
              */
@@ -86,7 +86,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                ['single_param' => 'foo'],
+                'idx' => ['single_param' => 'foo'],
             ],
         ];
 
@@ -98,7 +98,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
      */
     public function arrayOfObjectsWithDefault(): array
     {
-        $configObject = new class([new SingleParamConfig('foo')]) extends BaseTestConfig {
+        $configObject = new class(['idx' => new SingleParamConfig('foo')]) extends BaseTestConfig {
             /**
              * @param array<\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig> $param
              */
@@ -109,7 +109,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
         };
         $configValues = [
             'param' => [
-                ['single_param' => 'foo'],
+                'idx' => ['single_param' => 'foo'],
             ],
         ];
 
