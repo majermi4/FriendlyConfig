@@ -3,3 +3,5 @@ parameters:
 	paths:
 		- src
 		- tests
+	excludePaths:
+		- tests/Majermi4/FriendlyConfig/Tests/InvalidConfigClassTest.php
