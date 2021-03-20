@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Majermi4\FriendlyConfig\Tests\Util;
 
 use ArrayAccess;
-use Webmozart\Assert\Assert;
 
 /**
  * @implements ArrayAccess<string,mixed>
@@ -24,7 +23,11 @@ class BaseTestConfig implements ArrayAccess
     {
         $childClassReflection = new \ReflectionClass($this);
         $constructor = $childClassReflection->getConstructor();
-        Assert::notNull($constructor, 'Children classes are expected to have a constructor.');
+
+        if (null === $constructor) {
+            throw new \RuntimeException('Children classes must define constructor.');
+        }
+
         $parameters = $constructor->getParameters();
 
         foreach ($args as $i => $arg) {

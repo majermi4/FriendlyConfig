@@ -23,8 +23,7 @@ class FriendlyConfiguration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder($rootNodeName);
 
-        $configureTreeBuilder = new ConfigureTreeBuilder($class);
-        $configureTreeBuilder($treeBuilder);
+        (new ConfigureTreeBuilder())($treeBuilder, $class);
 
         return new self($treeBuilder);
     }

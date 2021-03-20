@@ -4,34 +4,27 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Majermi4\FriendlyConfig\Util\StringUtil;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Webmozart\Assert\Assert;
 
 class ConfigureTreeBuilder
 {
     /**
-     * @var class-string
-     */
-    private string $configClass;
-
-    /**
      * @param class-string $configClass
      */
-    public function __construct(string $configClass)
-    {
-        $this->configClass = $configClass;
-    }
-
-    public function __invoke(TreeBuilder $treeBuilder): void
+    public function __invoke(TreeBuilder $treeBuilder, string $configClass): void
     {
         $rootNode = $treeBuilder->getRootNode();
-        Assert::isInstanceOf($rootNode, ArrayNodeDefinition::class);
 
-        $this->configureClassNode($this->configClass, $rootNode);
+        if (!$rootNode instanceof ArrayNodeDefinition) {
+            throw new \RuntimeException('Root node must be an instance of ArrayNodeDefinition.');
+        }
+
+        $this->configureClassNode($configClass, $rootNode);
     }
 
     /**
@@ -43,18 +36,22 @@ class ConfigureTreeBuilder
         $constructor = $classReflection->getConstructor();
 
         if (null === $constructor) {
-            throw new \LogicException('1');
+            throw InvalidConfigClassException::missingConstructor($configClass);
         }
 
         $parameters = $constructor->getParameters();
 
         if (0 === \count($parameters)) {
-            throw new \LogicException('2');
+            throw InvalidConfigClassException::missingConstructorParameters($configClass);
         }
 
         foreach ($parameters as $parameter) {
             $parameterType = $parameter->getType();
-            Assert::notNull($parameterType); // TODO: Change to exception
+
+            if (null === $parameterType) {
+                throw InvalidConfigClassException::missingConstructorParameterType($configClass, $parameter->name);
+            }
+
             /* @phpstan-ignore-next-line */
             $parameterTypeName = $parameterType->getName();
             $configParameterName = $configParameterName = StringUtil::toSnakeCase($parameter->name);
@@ -77,7 +74,7 @@ class ConfigureTreeBuilder
                     break;
                 default:
                     if (!\class_exists($parameterTypeName)) {
-                        throw new \LogicException('3');
+                        throw InvalidConfigClassException::unsupportedConstructorParameterType($parameter);
                     }
                     $this->configureNestedClass($parameter, $childrenNodeBuilder);
                     break;
@@ -104,14 +101,14 @@ class ConfigureTreeBuilder
                 $arrayNode->floatPrototype();
                 break;
             case ParameterTypes::ARRAY:
-                throw new \LogicException('Nesting arrays inside arrays is not supported.');
+                throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemType);
             default:
-                Assert::classExists($arrayItemType); // TODO: Change to exception
+                if (!class_exists($arrayItemType)) {
+                    throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemType);
+                }
+
                 $arrayNode->useAttributeAsKey('name'); // In order to preserve keys.
                 $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
-                $this->configureSharedOptions($parameter, $arrayNode);
-
-                return;
         }
 
         $this->configureSharedOptions($parameter, $arrayNode);

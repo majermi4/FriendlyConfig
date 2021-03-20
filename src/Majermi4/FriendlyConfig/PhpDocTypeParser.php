@@ -4,25 +4,33 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Nette\Utils\Reflection;
-use Webmozart\Assert\Assert;
+use ReflectionClass;
 
 class PhpDocTypeParser
 {
     public static function getParameterArrayItemType(\ReflectionParameter $parameter): string
     {
+        /** @var ReflectionClass<object> $classReflection */
         $classReflection = $parameter->getDeclaringClass();
-        Assert::notNull($classReflection); // TODO: Change to exception
         $constructor = $classReflection->getConstructor();
-        Assert::notNull($constructor); // TODO: Change to exception
+
+        if (null === $constructor) {
+            throw InvalidConfigClassException::missingConstructor($classReflection->getName());
+        }
+
         $docComment = $constructor->getDocComment();
-        Assert::string($docComment); // TODO: Change to exception
+
+        if (false === $docComment) {
+            throw InvalidConfigClassException::missingConstructorDocComment($classReflection->getName());
+        }
 
         $outputArray = [];
         $success = preg_match('/@param\s+(array|iterable)<(.*,)?\s*(.+)>(\|null)?\s+\$'.$parameter->name.'/', $docComment, $outputArray);
 
         if (true !== (bool) $success) {
-            throw new \LogicException('Constructor parameter "'.$parameter->name.'" must have a PHPDoc annotation in the following format "@param array<T> $'.$parameter->name.'" where T is a nested type.');
+            throw InvalidConfigClassException::invalidConstructorDocCommentFormat($parameter->name);
         }
 
         $arrayItemType = $outputArray[3];

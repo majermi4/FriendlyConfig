@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Majermi4\FriendlyConfig\Util\StringUtil;
-use Webmozart\Assert\Assert;
 
 class InitializeConfigObject
 {
@@ -21,7 +21,11 @@ class InitializeConfigObject
     {
         $configClassReflection = new \ReflectionClass($configClass);
         $constructor = $configClassReflection->getConstructor();
-        Assert::notNull($constructor); // TODO: Change to exception
+
+        if (null === $constructor) {
+            throw InvalidConfigClassException::missingConstructor($configClass);
+        }
+
         $parameters = $constructor->getParameters();
 
         $resolvedParameters = [];
