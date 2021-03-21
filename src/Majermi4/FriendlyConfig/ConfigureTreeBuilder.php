@@ -35,15 +35,15 @@ class ConfigureTreeBuilder
         $classReflection = new \ReflectionClass($configClass);
         $constructor = $classReflection->getConstructor();
 
-        if (null === $constructor) {
-            throw InvalidConfigClassException::missingConstructor($configClass);
-        }
+//        if (null === $constructor) {
+//            throw InvalidConfigClassException::missingConstructor($configClass);
+//        }
 
         $parameters = $constructor->getParameters();
 
-        if (0 === \count($parameters)) {
-            throw InvalidConfigClassException::missingConstructorParameters($configClass);
-        }
+//        if (0 === \count($parameters)) {
+//            throw InvalidConfigClassException::missingConstructorParameters($configClass);
+//        }
 
         foreach ($parameters as $parameter) {
             $parameterType = $parameter->getType();
