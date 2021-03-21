@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Majermi4\FriendlyConfig;
+namespace Majermi4\FriendlyConfig\PhpDocParser;
 
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
+use Majermi4\FriendlyConfig\ParameterTypes;
 use Nette\Utils\Reflection;
 use ReflectionClass;
 
-class PhpDocTypeParser
+class ArrayItemTypeParser
 {
-    public static function getParameterArrayItemType(\ReflectionParameter $parameter): string
+    public static function getParameterArrayItemType(\ReflectionParameter $parameter): ArrayItemType
     {
         /** @var ReflectionClass<object> $classReflection */
         $classReflection = $parameter->getDeclaringClass();
@@ -27,18 +28,19 @@ class PhpDocTypeParser
         }
 
         $outputArray = [];
-        $success = preg_match('/@param\s+(array|iterable)<(.*,)?\s*(.+)>(\|null)?\s+\$'.$parameter->name.'/', $docComment, $outputArray);
+        $success = preg_match('/@param\s+array<((string|int),)?\s*(.+)>(\|null)?\s+\$'.$parameter->name.'/', $docComment, $outputArray);
 
         if (true !== (bool) $success) {
             throw InvalidConfigClassException::invalidConstructorDocCommentFormat($parameter->name);
         }
 
         $arrayItemType = $outputArray[3];
+        $arrayKeyType = $outputArray[2] === 'string' ? 'string' : 'int';
 
-        if (ParameterTypes::isSupportedType($arrayItemType)) {
-            return $arrayItemType;
+        if (!ParameterTypes::isSupportedType($arrayItemType)) {
+            $arrayItemType = Reflection::expandClassName($arrayItemType, $classReflection);
         }
 
-        return Reflection::expandClassName($arrayItemType, $classReflection);
+        return new ArrayItemType($arrayKeyType, $arrayItemType);
     }
 }

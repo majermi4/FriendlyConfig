@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Majermi4\FriendlyConfig;
 
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
+use Majermi4\FriendlyConfig\PhpDocParser\ArrayItemTypeParser;
 use Majermi4\FriendlyConfig\Util\StringUtil;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
@@ -84,10 +85,12 @@ class ConfigureTreeBuilder
 
     private function configureArray(\ReflectionParameter $parameter, NodeBuilder $nodeBuilder): void
     {
-        $arrayItemType = PhpDocTypeParser::getParameterArrayItemType($parameter);
         $arrayNode = $nodeBuilder->arrayNode(StringUtil::toSnakeCase($parameter->name));
 
-        switch ($arrayItemType) {
+        $arrayItemType = ArrayItemTypeParser::getParameterArrayItemType($parameter);
+        $arrayItemValueType = $arrayItemType->getValueType();
+
+        switch ($arrayItemValueType) {
             case ParameterTypes::INT:
                 $arrayNode->integerPrototype();
                 break;
@@ -101,14 +104,17 @@ class ConfigureTreeBuilder
                 $arrayNode->floatPrototype();
                 break;
             case ParameterTypes::ARRAY:
-                throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemType);
+                throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemValueType);
             default:
-                if (!class_exists($arrayItemType)) {
-                    throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemType);
+                if (!class_exists($arrayItemValueType)) {
+                    throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemValueType);
                 }
 
-                $arrayNode->useAttributeAsKey('name'); // In order to preserve keys.
-                $this->configureClassNode($arrayItemType, $arrayNode->arrayPrototype());
+                $this->configureClassNode($arrayItemValueType, $arrayNode->arrayPrototype());
+        }
+
+        if ($arrayItemType->getKeyType() === 'string') {
+            $arrayNode->useAttributeAsKey('name'); // In order to preserve keys.
         }
 
         $this->configureSharedOptions($parameter, $arrayNode);

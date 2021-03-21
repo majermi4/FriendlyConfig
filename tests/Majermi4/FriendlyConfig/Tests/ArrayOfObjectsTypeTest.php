@@ -34,7 +34,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
         ];
         $configObject = new class($expectedParamValue) extends BaseTestConfig {
             /**
-             * @param array<\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig> $param
+             * @param array<string,\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig> $param
              */
             public function __construct(array $param)
             {
@@ -58,7 +58,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
     {
         $configObject = new class([]) extends BaseTestConfig {
             /**
-             * @param array<\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig>|null $param
+             * @param array<string,\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig>|null $param
              */
             public function __construct(?array $param)
             {
@@ -77,7 +77,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
     {
         $configObject = new class(['idx' => new SingleParamConfig('foo')]) extends BaseTestConfig {
             /**
-             * @param array<\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig>|null $param
+             * @param array<string,\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig>|null $param
              */
             public function __construct(?array $param)
             {
@@ -100,7 +100,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
     {
         $configObject = new class(['idx' => new SingleParamConfig('foo')]) extends BaseTestConfig {
             /**
-             * @param array<\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig> $param
+             * @param array<string,\Majermi4\FriendlyConfig\Tests\Fixtures\SingleParamConfig> $param
              */
             public function __construct(array $param)
             {

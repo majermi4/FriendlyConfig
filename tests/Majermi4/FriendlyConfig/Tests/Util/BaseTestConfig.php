@@ -95,7 +95,7 @@ class BaseTestConfig implements ArrayAccess
                         continue;
                     }
 
-                    if ($other[$key][$idx] !== $nestedValue) {
+                    if (!isset($other[$key][$idx]) || $other[$key][$idx] !== $nestedValue) {
                         return false;
                     }
                 }
