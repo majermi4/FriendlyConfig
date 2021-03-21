@@ -13,24 +13,12 @@ class ArrayItemTypeParser
 {
     public static function getParameterArrayItemType(\ReflectionParameter $parameter): ArrayItemType
     {
-        /** @var ReflectionClass<object> $classReflection */
-        $classReflection = $parameter->getDeclaringClass();
-        $constructor = $classReflection->getConstructor();
-
-        if ($constructor === null) {
-            throw InvalidConfigClassException::missingConstructor($classReflection->getName());
-        }
-
-        $docComment = $constructor->getDocComment();
-
-        if ($docComment === false) {
-            throw InvalidConfigClassException::missingConstructorDocComment($classReflection->getName());
-        }
+        $docComment = DocCommentParser::getConstructorDocComment($parameter);
 
         $outputArray = [];
         $success = preg_match('/@param\s+array<((string|int),)?\s*(.+)>(\|null)?\s+\$'.$parameter->name.'/', $docComment, $outputArray);
 
-        if (true !== (bool) $success) {
+        if ((bool) $success !== true) {
             throw InvalidConfigClassException::invalidConstructorDocCommentFormat($parameter->name);
         }
 
@@ -38,6 +26,8 @@ class ArrayItemTypeParser
         $arrayKeyType = $outputArray[2] === 'string' ? 'string' : 'int';
 
         if (!ParameterTypes::isSupportedType($arrayItemType)) {
+            /** @var ReflectionClass<object> $classReflection */
+            $classReflection = $parameter->getDeclaringClass();
             $arrayItemType = Reflection::expandClassName($arrayItemType, $classReflection);
         }
 

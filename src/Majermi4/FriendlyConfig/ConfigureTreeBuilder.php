@@ -6,6 +6,7 @@ namespace Majermi4\FriendlyConfig;
 
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Majermi4\FriendlyConfig\PhpDocParser\ArrayItemTypeParser;
+use Majermi4\FriendlyConfig\PhpDocParser\ParameterDescriptionParser;
 use Majermi4\FriendlyConfig\Util\StringUtil;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
@@ -144,6 +145,11 @@ class ConfigureTreeBuilder
 
         if ($parameterHasDefaultValue && $addDefaultValueIfApplicable) {
             $nodeDefinition->defaultValue($parameter->getDefaultValue());
+        }
+
+        $parameterDescription = ParameterDescriptionParser::getParameterDescription($parameter);
+        if ($parameterDescription !== null) {
+            $nodeDefinition->info($parameterDescription);
         }
     }
 }
