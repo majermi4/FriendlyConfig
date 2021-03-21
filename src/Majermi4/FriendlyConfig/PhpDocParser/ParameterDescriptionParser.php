@@ -60,7 +60,7 @@ class ParameterDescriptionParser
             return null;
         }
 
-        $docCommentLines = preg_split('/$\R?^/m', $propertyDocComment);
+        $docCommentLines = preg_split('/\r\n|\n|\r/', $propertyDocComment);
         if ($docCommentLines === false) {
             return null;
         }
