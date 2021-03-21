@@ -82,15 +82,29 @@ use Majermi4\FriendlyConfig\RegisterConfigService;
 
 class MyBundleExtension extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration(FriendlyConfiguration::fromClass(MyConfig::class), $configs);
-        
-        // Initialise config object from processed config
-        $initialisedConfig = InitializeConfigObject::fromProcessedConfig(MyConfig::class, $config);
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
 
-        // Or ... register config object with processed values as a service 
-        RegisterConfigService::fromProcessedConfig(MyConfig::class, $config, $container);
+        if ($configuration instanceof FriendlyConfiguration) {
+            // Register config object with processed values as a service 
+            RegisterConfigService::fromProcessedConfig($configuration->getConfigClass(), $config, $container);
+    
+            // Or ... initialise config object from processed config immediately if needed
+            $initialisedConfig = InitializeConfigObject::fromProcessedConfig(MyConfig::class, $config);
+        }        
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfiguration(array $config, ContainerBuilder $container) : ConfigurationInterface
+    {
+        return FriendlyConfiguration::fromClass(MyConfig::class, 'my_config');
     }
 }
 ```
