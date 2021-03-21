@@ -28,6 +28,7 @@
     },
     "scripts": {
         "analyse" : "vendor/bin/phpstan analyse -c phpstan.neon",
+        "analyse-github" : "vendor/bin/phpstan analyse -c phpstan.neon --error-format=github",
         "test" : "vendor/bin/phpunit -c phpunit.xml tests",
         "test-coverage" : "vendor/bin/phpunit tests -c phpunit.xml --coverage-clover coverage.xml",
         "cs-fix-src" : "./vendor/bin/php-cs-fixer fix src --rules=@Symfony --allow-risky=yes",
