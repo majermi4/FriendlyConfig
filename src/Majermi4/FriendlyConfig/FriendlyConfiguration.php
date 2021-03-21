@@ -10,10 +10,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class FriendlyConfiguration implements ConfigurationInterface
 {
     private TreeBuilder $treeBuilder;
+    /**
+     * @var class-string
+     */
+    private string $configClass;
 
-    private function __construct(TreeBuilder $treeBuilder)
+    /**
+     * @param class-string $configClass
+     */
+    private function __construct(TreeBuilder $treeBuilder, string $configClass)
     {
         $this->treeBuilder = $treeBuilder;
+        $this->configClass = $configClass;
     }
 
     /**
@@ -25,11 +33,19 @@ class FriendlyConfiguration implements ConfigurationInterface
 
         (new ConfigureTreeBuilder())($treeBuilder, $class);
 
-        return new self($treeBuilder);
+        return new self($treeBuilder, $class);
     }
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
         return $this->treeBuilder;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function getConfigClass(): string
+    {
+        return $this->configClass;
     }
 }
