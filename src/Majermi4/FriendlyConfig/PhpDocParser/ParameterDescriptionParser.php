@@ -60,15 +60,20 @@ class ParameterDescriptionParser
             return null;
         }
 
+        $docCommentLines = preg_split('/$\R?^/m', $propertyDocComment);
+        if ($docCommentLines === false) {
+            return null;
+        }
+
         $description = '';
-        foreach (explode("\n", $propertyDocComment) as $propertyDocCommentLine) {
+        foreach ($docCommentLines as $propertyDocCommentLine) {
             $outputArray = [];
             $pregMatchSuccess = preg_match('/\s+\*\s+([^@].*)(\*\/)?/', $propertyDocCommentLine, $outputArray);
             if ((bool) $pregMatchSuccess !== true) {
                 continue;
             }
 
-            $trimmedLineText = trim($outputArray[1]);
+            $trimmedLineText = trim($outputArray[1] ?? '');
             if ($trimmedLineText === '') {
                 continue;
             }
