@@ -16,13 +16,13 @@ class PhpDocTypeParser
         $classReflection = $parameter->getDeclaringClass();
         $constructor = $classReflection->getConstructor();
 
-        if (null === $constructor) {
+        if ($constructor === null) {
             throw InvalidConfigClassException::missingConstructor($classReflection->getName());
         }
 
         $docComment = $constructor->getDocComment();
 
-        if (false === $docComment) {
+        if ($docComment === false) {
             throw InvalidConfigClassException::missingConstructorDocComment($classReflection->getName());
         }
 

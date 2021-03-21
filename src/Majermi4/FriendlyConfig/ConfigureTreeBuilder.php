@@ -35,7 +35,7 @@ class ConfigureTreeBuilder
         $classReflection = new \ReflectionClass($configClass);
         $constructor = $classReflection->getConstructor();
 
-        if (null === $constructor) {
+        if ($constructor === null) {
             throw InvalidConfigClassException::missingConstructor($configClass);
         }
 
@@ -48,7 +48,7 @@ class ConfigureTreeBuilder
         foreach ($parameters as $parameter) {
             $parameterType = $parameter->getType();
 
-            if (null === $parameterType) {
+            if ($parameterType === null) {
                 throw InvalidConfigClassException::missingConstructorParameterType($configClass, $parameter->name);
             }
 

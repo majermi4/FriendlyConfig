@@ -24,7 +24,7 @@ class BaseTestConfig implements ArrayAccess
         $childClassReflection = new \ReflectionClass($this);
         $constructor = $childClassReflection->getConstructor();
 
-        if (null === $constructor) {
+        if ($constructor === null) {
             throw new \RuntimeException('Children classes must define constructor.');
         }
 

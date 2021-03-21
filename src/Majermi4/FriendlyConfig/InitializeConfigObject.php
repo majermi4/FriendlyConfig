@@ -22,7 +22,7 @@ class InitializeConfigObject
         $configClassReflection = new \ReflectionClass($configClass);
         $constructor = $configClassReflection->getConstructor();
 
-        if (null === $constructor) {
+        if ($constructor === null) {
             throw InvalidConfigClassException::missingConstructor($configClass);
         }
 
