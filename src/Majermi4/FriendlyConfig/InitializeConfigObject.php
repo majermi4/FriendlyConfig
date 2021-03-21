@@ -45,19 +45,7 @@ class InitializeConfigObject
             } elseif (\class_exists($parameterType)) {
                 $resolvedParameter = InitializeConfigObject::fromProcessedConfig($parameterType, $processedConfig[$parameterName]);
             } elseif ($parameterType === ParameterTypes::ARRAY) {
-                $arrayItemType = ArrayItemTypeParser::getParameterArrayItemType($parameter);
-                $resolvedParameter = [];
-                foreach ($processedConfig[$parameterName] as $idx => $item) {
-                    $resolvedParameterItem = $item;
-                    if (class_exists($arrayItemType->getValueType())) {
-                        $resolvedParameterItem = InitializeConfigObject::fromProcessedConfig($arrayItemType->getValueType(), $item);
-                    }
-                    if ($arrayItemType->getKeyType() === 'string') {
-                        $resolvedParameter[$idx] = $resolvedParameterItem;
-                    } else {
-                        $resolvedParameter[] = $resolvedParameterItem;
-                    }
-                }
+                $resolvedParameter = self::resolveArrayParameter($parameter, $processedConfig);
             } else {
                 $resolvedParameter = $processedConfig[$parameterName];
             }
@@ -66,5 +54,31 @@ class InitializeConfigObject
         }
 
         return $configClassReflection->newInstanceArgs($resolvedParameters);
+    }
+
+    /**
+     * @param array<string,mixed> $processedConfig
+     *
+     * @return array<mixed,mixed>
+     */
+    private static function resolveArrayParameter(\ReflectionParameter $parameter, array $processedConfig): array
+    {
+        $parameterName = StringUtil::toSnakeCase($parameter->name);
+        $arrayItemType = ArrayItemTypeParser::getParameterArrayItemType($parameter);
+
+        $resolvedParameter = [];
+        foreach ($processedConfig[$parameterName] as $idx => $item) {
+            $resolvedParameterItem = $item;
+            if (class_exists($arrayItemType->getValueType())) {
+                $resolvedParameterItem = InitializeConfigObject::fromProcessedConfig($arrayItemType->getValueType(), $item);
+            }
+            if ($arrayItemType->getKeyType() === 'string') {
+                $resolvedParameter[$idx] = $resolvedParameterItem;
+            } else {
+                $resolvedParameter[] = $resolvedParameterItem;
+            }
+        }
+
+        return $resolvedParameter;
     }
 }
