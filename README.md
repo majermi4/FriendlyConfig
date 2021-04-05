@@ -7,7 +7,33 @@
 [![Coverage Status](https://coveralls.io/repos/github/majermi4/FriendlyConfig/badge.svg?branch=main)](https://coveralls.io/github/majermi4/FriendlyConfig?branch=main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/majermi4/FriendlyConfig/blob/main/LICENSE)
 
-We love the Symfony configuration component! :heart: It provides schema, validation, documentation and many more features to our bundle configs. However, many of us don't like writing it :neutral_face: ... What if we could change that?
+We love the Symfony configuration component! :heart: It provides schema, validation, documentation and many more features to our bundle configs. However, many of us don't like defining it ... The goal of this project is to change that.
+
+## Documentation
+
+1. [Motivation](./docs/motivation.md)
+    1. [Code duplication](./docs/motivation.md#code-duplication)
+    2. [Writing config definition manually is hard](./docs/motivation.md#writing-config-definition-manually-is-hard)
+    3. [Negative impact on development and refactoring speed](./docs/motivation.md#negative-impact-on-development-and-refactoring-speed)
+1. [Usage](./docs/usage.md)
+    1. [Basics](./docs/usage.md#basics)
+    1. [Simple types](./docs/usage.md#simple-types)
+    1. [Nested types](./docs/usage.md)
+    1. [Other inferred configuration options](./docs/usage.md)
+       1. [Required](./docs/usage.md)
+       1. [Default value](./docs/usage.md)
+       1. [Info](./docs/usage.md)
+    1. [Symfony DI component integration](./docs/usage.md)
+1. [Conventions & Limitations](./docs/conventions_and_limitations.md)
+
+## Installation
+
+This is installable via [Composer](https://getcomposer.org/) as
+[majermi4/friendly-config](https://packagist.org/packages/majermi4/friendly-config):
+
+    composer require majermi4/friendly-config
+
+## Basic example:
 
 Instead of having to write configuration such as this:
 
