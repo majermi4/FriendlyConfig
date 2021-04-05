@@ -10,4 +10,18 @@ class StringUtil
     {
         return strtolower((string) preg_replace('/[A-Z]/', '_\\0', lcfirst($propertyName)));
     }
+
+    /**
+     * @return array<string>|null
+     */
+    public static function splitTextNewLines(string $textWithNewLines): ?array
+    {
+        $textLines = preg_split('/\r\n|\n|\r/', $textWithNewLines);
+
+        if ($textLines === false) {
+            return null;
+        }
+
+        return $textLines;
+    }
 }

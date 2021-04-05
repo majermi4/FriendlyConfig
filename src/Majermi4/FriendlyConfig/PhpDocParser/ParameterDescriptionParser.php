@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Majermi4\FriendlyConfig\PhpDocParser;
 
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
+use Majermi4\FriendlyConfig\Util\StringUtil;
 use ReflectionClass;
 use ReflectionParameter;
 
@@ -29,7 +30,12 @@ class ParameterDescriptionParser
             return null;
         }
 
-        $pregGrepResult = preg_grep('/@param\s+.+\s+\$'.$constructorParameter->name.'\s+(.*)(\s+)?(\*\/)?/', explode("\n", $constructorDocComment));
+        $constructorDocCommentLines = StringUtil::splitTextNewLines($constructorDocComment);
+        if ($constructorDocCommentLines === null) {
+            return null;
+        }
+
+        $pregGrepResult = preg_grep('/@param\s+.+\s+\$'.$constructorParameter->name.'\s+(.*)(\s+)?(\*\/)?/', $constructorDocCommentLines);
         if (!is_array($pregGrepResult) || count($pregGrepResult) === 0) {
             return null;
         }
@@ -60,8 +66,8 @@ class ParameterDescriptionParser
             return null;
         }
 
-        $docCommentLines = preg_split('/\r\n|\n|\r/', $propertyDocComment);
-        if ($docCommentLines === false) {
+        $docCommentLines = StringUtil::splitTextNewLines($propertyDocComment);
+        if ($docCommentLines === null) {
             return null;
         }
 
