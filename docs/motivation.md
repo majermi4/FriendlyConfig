@@ -56,9 +56,10 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->integerNode('some_option')->end()
-                ->required()
-                ->defaultValue('some default')
+                ->integerNode('some_option')
+                    ->required()
+                    ->defaultValue('some default')
+                ->end()
             ->end()
         ;
 
@@ -71,7 +72,7 @@ class Configuration implements ConfigurationInterface
 
 The example of Symfony config definition from the previous section is a very simple one. When a project grows and new nested options are added regularly, these configuration classes start to grow in complexity and even experienced developers have confessed to finding themselves re-visiting the docs or simply copy-pasting previously used definition structures from other places to avoid making mistakes and getting stuck. 
 
-This is not to say that learning the config definition _[DSL](https://en.wikipedia.org/wiki/Domain-specific_language)_ is a rocket science. However, it requires familiarising yourself with a new syntax and concepts that do not necessarily add that much value.
+This is not to say that learning the config definition _[DSL](https://en.wikipedia.org/wiki/Domain-specific_language)_ is a rocket science. However, it requires familiarising yourself with a new syntax and concepts.
 
 ## 3. Negative impact on development and refactoring speed
 
