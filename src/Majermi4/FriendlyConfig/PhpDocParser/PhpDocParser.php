@@ -35,7 +35,11 @@ class PhpDocParser
             return $paramNode;
         }
 
-        throw InvalidConfigClassException::missingConstructorDocComment('xxx'); //TODO: fix wrong exception
+        /** @var \ReflectionClass<object> $declaringClass */
+        $declaringClass = $parameter->getDeclaringClass();
+        $declaringClassName = $declaringClass->getName();
+
+        throw InvalidConfigClassException::missingConstructorDocComment($declaringClassName);
     }
 
     public static function getParameterPhpDocType(\ReflectionParameter $parameter): TypeNode
