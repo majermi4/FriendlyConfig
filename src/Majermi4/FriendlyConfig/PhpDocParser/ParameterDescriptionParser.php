@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Majermi4\FriendlyConfig\PhpDocParser;
 
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
-use Majermi4\FriendlyConfig\Util\StringUtil;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use ReflectionClass;
 use ReflectionParameter;
 
@@ -15,7 +16,7 @@ class ParameterDescriptionParser
     {
         $constructorDocCommentParamDescription = self::getConstructorDocCommentDescription($constructorParameter);
 
-        if ($constructorDocCommentParamDescription !== null) {
+        if ($constructorDocCommentParamDescription !== null && $constructorDocCommentParamDescription !== '') {
             return $constructorDocCommentParamDescription;
         }
 
@@ -25,28 +26,15 @@ class ParameterDescriptionParser
     private static function getConstructorDocCommentDescription(ReflectionParameter $constructorParameter): ?string
     {
         try {
-            $constructorDocComment = DocCommentParser::getConstructorDocComment($constructorParameter);
+            $parameterTypeNode = PhpDocParser::getParameterPhpDocNode($constructorParameter);
         } catch (InvalidConfigClassException $e) {
             return null;
         }
 
-        $constructorDocCommentLines = StringUtil::splitTextNewLines($constructorDocComment);
-        if ($constructorDocCommentLines === null) {
-            return null;
-        }
+        /** @var ParamTagValueNode $parameterTypeNodeValue */
+        $parameterTypeNodeValue = $parameterTypeNode->value;
 
-        $pregGrepResult = preg_grep('/@param\s+.+\s+\$'.$constructorParameter->name.'\s+(.*)(\s+)?(\*\/)?/', $constructorDocCommentLines);
-        if (!is_array($pregGrepResult) || count($pregGrepResult) === 0) {
-            return null;
-        }
-
-        $outputArray = [];
-        $pregMatchSuccess = preg_match('/@param\s+.+\s+\$'.$constructorParameter->name.'\s+(.*)(\s+)?(\*\/)?/', reset($pregGrepResult), $outputArray);
-        if ((bool) $pregMatchSuccess !== true) {
-            return null;
-        }
-
-        return $outputArray[1];
+        return $parameterTypeNodeValue->description;
     }
 
     private static function getPropertyDocCommentDescription(ReflectionParameter $constructorParameter): ?string
@@ -60,31 +48,16 @@ class ParameterDescriptionParser
             return null;
         }
 
-        $propertyDocComment = $property->getDocComment();
+        $propertyDocComment = (string) $property->getDocComment();
 
-        if ($propertyDocComment === false) {
-            return null;
-        }
-
-        $docCommentLines = StringUtil::splitTextNewLines($propertyDocComment);
-        if ($docCommentLines === null) {
-            return null;
-        }
+        $phpDocNode = PhpDocParser::parseDocComment($propertyDocComment);
 
         $description = '';
-        foreach ($docCommentLines as $propertyDocCommentLine) {
-            $outputArray = [];
-            $pregMatchSuccess = preg_match('/\s+\*\s+([^@].*)(\*\/)?/', $propertyDocCommentLine, $outputArray);
-            if ((bool) $pregMatchSuccess !== true) {
-                continue;
+        foreach ($phpDocNode->children as $phpDocChildNode) {
+            if ($phpDocChildNode instanceof PhpDocTextNode) {
+                // Replaces new lines with spaces
+                $description .= trim((string) preg_replace('/\s+/', ' ', $phpDocChildNode->text));
             }
-
-            $trimmedLineText = trim($outputArray[1] ?? '');
-            if ($trimmedLineText === '') {
-                continue;
-            }
-
-            $description .= ' '.$outputArray[1];
         }
 
         $trimmedDescription = trim($description);
