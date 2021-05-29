@@ -50,6 +50,10 @@ class ParameterDescriptionParser
 
         $propertyDocComment = (string) $property->getDocComment();
 
+        if ($propertyDocComment === '') {
+            return null;
+        }
+
         $phpDocNode = PhpDocParser::parseDocComment($propertyDocComment);
 
         $description = '';
