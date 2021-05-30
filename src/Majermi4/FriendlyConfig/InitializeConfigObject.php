@@ -7,6 +7,7 @@ namespace Majermi4\FriendlyConfig;
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Majermi4\FriendlyConfig\PhpDocParser\ArrayItemTypeParser;
 use Majermi4\FriendlyConfig\Util\StringUtil;
+use ReflectionNamedType;
 
 class InitializeConfigObject
 {
@@ -38,13 +39,18 @@ class InitializeConfigObject
                 break;
             }
 
-            /* @phpstan-ignore-next-line */
-            $parameterType = $parameter->getType()->getName();
+            $parameterType = $parameter->getType();
+            if ($parameterType instanceof ReflectionNamedType) {
+                $parameterTypeName = $parameterType->getName();
+            } else {
+                $parameterTypeName = ParameterTypes::MIXED;
+            }
+
             if (!isset($processedConfig[$parameterName])) {
                 $resolvedParameter = null;
-            } elseif (\class_exists($parameterType)) {
-                $resolvedParameter = InitializeConfigObject::fromProcessedConfig($parameterType, $processedConfig[$parameterName]);
-            } elseif ($parameterType === ParameterTypes::ARRAY) {
+            } elseif (\class_exists($parameterTypeName)) {
+                $resolvedParameter = InitializeConfigObject::fromProcessedConfig($parameterTypeName, $processedConfig[$parameterName]);
+            } elseif ($parameterTypeName === ParameterTypes::ARRAY) {
                 $resolvedParameter = self::resolveArrayParameter($parameter, $processedConfig);
             } else {
                 $resolvedParameter = $processedConfig[$parameterName];

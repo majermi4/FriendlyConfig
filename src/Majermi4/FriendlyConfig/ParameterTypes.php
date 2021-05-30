@@ -11,6 +11,7 @@ class ParameterTypes
     public const FLOAT = 'float';
     public const STRING = 'string';
     public const ARRAY = 'array';
+    public const MIXED = 'mixed';
 
     public const SUPPORTED_PRIMITIVE_TYPES = [
         self::BOOL,
@@ -18,6 +19,7 @@ class ParameterTypes
         self::FLOAT,
         self::STRING,
         self::ARRAY,
+        self::MIXED,
     ];
 
     /**

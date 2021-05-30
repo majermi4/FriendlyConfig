@@ -22,11 +22,11 @@ class ArrayItemTypeParser
         $genericTypes = self::getArrayTypeNode($parameterType, $parameter->name)->genericTypes;
 
         if (\count($genericTypes) === 1) {
-            $arrayKeyType = 'int';
+            $arrayKeyType = ParameterTypes::INT;
             $arrayItemType = $genericTypes[0]->name;
         } elseif (\count($genericTypes) === 2) {
             $arrayKeyType = $genericTypes[0]->name === 'string' ? 'string' : 'int';
-            $arrayItemType = $genericTypes[1]->name;
+            $arrayItemType = $genericTypes[1]->name ?? ParameterTypes::MIXED;
         } else {
             throw InvalidConfigClassException::invalidConstructorDocCommentFormat($parameter->name);
         }

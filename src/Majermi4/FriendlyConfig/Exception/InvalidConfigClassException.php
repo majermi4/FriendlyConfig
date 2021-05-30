@@ -12,11 +12,10 @@ class InvalidConfigClassException extends RuntimeException
 {
     public const MISSING_CONSTRUCTOR = 1;
     public const MISSING_CONSTRUCTOR_PARAMETERS = 2;
-    public const MISSING_CONSTRUCTOR_PARAMETER_TYPE = 3;
-    public const MISSING_CONSTRUCTOR_DOC_COMMENT = 4;
-    public const INVALID_CONSTRUCTOR_DOC_COMMENT_FORMAT = 5;
-    public const UNSUPPORTED_CONSTRUCTOR_PARAMETER_TYPE = 7;
-    public const UNSUPPORTED_NESTED_ARRAY_TYPE = 7;
+    public const MISSING_CONSTRUCTOR_DOC_COMMENT = 3;
+    public const INVALID_CONSTRUCTOR_DOC_COMMENT_FORMAT = 4;
+    public const UNSUPPORTED_CONSTRUCTOR_PARAMETER_TYPE = 5;
+    public const UNSUPPORTED_NESTED_ARRAY_TYPE = 6;
 
     public static function missingConstructor(string $className): self
     {
@@ -37,18 +36,6 @@ class InvalidConfigClassException extends RuntimeException
                 $className,
             ),
             self::MISSING_CONSTRUCTOR_PARAMETERS
-        );
-    }
-
-    public static function missingConstructorParameterType(string $className, string $parameterName): self
-    {
-        return new self(
-            sprintf(
-                'Constructor parameter "%s" of class "%s" must define a type (string, int, etc) so it can be used by FriendlyConfig to set Symfony config parameters.',
-                $parameterName,
-                $className,
-            ),
-            self::MISSING_CONSTRUCTOR_PARAMETER_TYPE,
         );
     }
 

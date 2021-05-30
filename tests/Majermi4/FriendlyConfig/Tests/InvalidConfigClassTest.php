@@ -34,20 +34,6 @@ class InvalidConfigClassTest extends TestCase
         FriendlyConfiguration::fromClass(get_class($configObject), 'TestConfig');
     }
 
-    public function testConfigClassWithMissingConstructorParameterType(): void
-    {
-        $configObject = new class('foo') {
-            public function __construct($param)
-            {
-            }
-        };
-
-        static::expectException(InvalidConfigClassException::class);
-        static::expectExceptionCode(InvalidConfigClassException::MISSING_CONSTRUCTOR_PARAMETER_TYPE);
-
-        FriendlyConfiguration::fromClass(get_class($configObject), 'TestConfig');
-    }
-
     public function testConfigClassWithMissingConstructorDocComment(): void
     {
         $configObject = new class(['foo']) {

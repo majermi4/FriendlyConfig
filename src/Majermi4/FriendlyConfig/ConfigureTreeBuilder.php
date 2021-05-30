@@ -49,15 +49,17 @@ class ConfigureTreeBuilder
 
         foreach ($parameters as $parameter) {
             $parameterType = $parameter->getType();
+            $configParameterName = StringUtil::toSnakeCase($parameter->name);
+            $childrenNodeBuilder = $nodeDefinition->children();
 
             if ($parameterType === null) {
-                throw InvalidConfigClassException::missingConstructorParameterType($configClass, $parameter->name);
+                $this->configureSharedOptions($parameter, $childrenNodeBuilder->variableNode($configParameterName));
+
+                continue;
             }
 
             /* @phpstan-ignore-next-line */
             $parameterTypeName = $parameterType->getName();
-            $configParameterName = $configParameterName = StringUtil::toSnakeCase($parameter->name);
-            $childrenNodeBuilder = $nodeDefinition->children();
             switch ($parameterTypeName) {
                 case ParameterTypes::INT:
                     $this->configureSharedOptions($parameter, $childrenNodeBuilder->integerNode($configParameterName));
@@ -103,6 +105,9 @@ class ConfigureTreeBuilder
                 break;
             case ParameterTypes::FLOAT:
                 $arrayNode->floatPrototype();
+                break;
+            case ParameterTypes::MIXED:
+                $arrayNode->variablePrototype();
                 break;
             case ParameterTypes::ARRAY:
                 throw InvalidConfigClassException::unsupportedNestedArrayType($parameter, $arrayItemValueType);
