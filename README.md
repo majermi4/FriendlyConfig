@@ -18,13 +18,12 @@ We love the Symfony configuration component! :heart: It provides schema, validat
 1. [Usage](./docs/usage.md)
     1. [Basics](./docs/usage.md#basics)
     1. [Simple types](./docs/usage.md#simple-types)
-    1. [Nested types](./docs/usage.md)
-    1. [Other inferred configuration options](./docs/usage.md)
-       1. [Required](./docs/usage.md)
-       1. [Default value](./docs/usage.md)
-       1. [Info](./docs/usage.md)
-    1. [Symfony DI component integration](./docs/usage.md)
-1. [Conventions & Limitations](./docs/conventions_and_limitations.md)
+    1. [Nested types](./docs/usage.md#nested-types)
+    1. [Other inferred configuration options](./docs/usage.md#other-inferred-configuration-options)
+       1. [Required](./docs/usage.md#required)
+       1. [Default value](./docs/usage.md#default-value)
+       1. [Info](./docs/usage.md#info)
+1. [Limitations](./docs/limitations.md)
 
 ## Installation
 
@@ -33,7 +32,7 @@ This is installable via [Composer](https://getcomposer.org/) as
 
     composer require majermi4/friendly-config
 
-## Basic example:
+## Basic usage:
 
 Instead of having to write configuration such as this:
 
@@ -95,7 +94,7 @@ class Settings
 }
 ```
 
-The following few lines will convert your pure PHP objects into valid Symfony configuration that defines schema of your bundle configuration. On top of that, the processed configuration values are used to initialize your pure PHP objects so you can easily access the processed values. 
+The following few lines will convert your pure PHP objects into valid Symfony configuration that defines schema of your bundle configuration. On top of that, the processed configuration values are used to initialize your pure PHP objects, so you can easily access the processed values. 
 
 You can register the initialised config objects as services which will allow you to easily access the initialised config objects anywhere in your application.
 
@@ -111,6 +110,14 @@ class MyBundleExtension extends Extension
     /**
      * {@inheritdoc}
      */
+    public function getConfiguration(array $config, ContainerBuilder $container) : ConfigurationInterface
+    {
+        return FriendlyConfiguration::fromClass(MyConfig::class, 'my_config');
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);
@@ -123,14 +130,6 @@ class MyBundleExtension extends Extension
             // Or ... initialise config object from processed config immediately if needed
             $initialisedConfig = InitializeConfigObject::fromProcessedConfig(MyConfig::class, $config);
         }        
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration(array $config, ContainerBuilder $container) : ConfigurationInterface
-    {
-        return FriendlyConfiguration::fromClass(MyConfig::class, 'my_config');
     }
 }
 ```
