@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig;
 
+use Majermi4\FriendlyConfig\Attribute\ArrayKeyName;
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Majermi4\FriendlyConfig\PhpDocParser\ArrayItemTypeParser;
 use Majermi4\FriendlyConfig\PhpDocParser\ParameterDescriptionParser;
@@ -120,7 +121,17 @@ class ConfigureTreeBuilder
         }
 
         if ($arrayItemType->getKeyType() === 'string') {
-            $arrayNode->useAttributeAsKey('name'); // In order to preserve keys.
+            $arrayKeyName = 'name';
+
+            if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 8) {
+                /* @phpstan-ignore-next-line (Because of PHP versions older than 8.0) */
+                $arrayKeyNameParamAttribute = $parameter->getAttributes(ArrayKeyName::class);
+                if ($arrayKeyNameParamAttribute !== null) {
+                    $arrayKeyName = $arrayKeyNameParamAttribute[0]->getArguments()[0];
+                }
+            }
+
+            $arrayNode->useAttributeAsKey($arrayKeyName); // In order to preserve keys.
         }
 
         $this->configureSharedOptions($parameter, $arrayNode);
