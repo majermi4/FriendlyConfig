@@ -123,11 +123,10 @@ class ConfigureTreeBuilder
         if ($arrayItemType->getKeyType() === 'string') {
             $arrayKeyName = 'name';
 
-            if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION >= 8) {
-                /* @phpstan-ignore-next-line (Because of PHP versions older than 8.0) */
-                $arrayKeyNameParamAttribute = $parameter->getAttributes(ArrayKeyName::class);
-                if ($arrayKeyNameParamAttribute !== null) {
-                    $arrayKeyName = $arrayKeyNameParamAttribute[0]->getArguments()[0];
+            if (method_exists($parameter, 'getAttributes')) {
+                $arrayKeyNameParamAttributes = $parameter->getAttributes(ArrayKeyName::class);
+                if (\count($arrayKeyNameParamAttributes) > 0) {
+                    $arrayKeyName = $arrayKeyNameParamAttributes[0]->getArguments()[0];
                 }
             }
 
