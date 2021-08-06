@@ -38,7 +38,7 @@ class InitializeConfigObject
             if ($parameter->isOptional() && !\array_key_exists($parameterName, $processedConfig)) {
                 $resolvedParameters[] = $parameter->getDefaultValue();
 
-                break;
+                continue;
             }
 
             $parameterType = $parameter->getType();
