@@ -36,6 +36,8 @@ class InitializeConfigObject
             $parameterName = StringUtil::toSnakeCase($parameter->name);
 
             if ($parameter->isOptional() && !\array_key_exists($parameterName, $processedConfig)) {
+                $resolvedParameters[] = $parameter->getDefaultValue();
+
                 break;
             }
 
