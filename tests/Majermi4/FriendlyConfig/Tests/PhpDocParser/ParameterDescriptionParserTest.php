@@ -15,22 +15,22 @@ class ParameterDescriptionParserTest extends TestCase
             /**
              * This comment should not be processed because there exist comment in constructor doc comment.
              */
-            private int $intParam;
+            public int $intParam;
             /**
              * Unlike previous parameter, this one is a string.
              */
-            private string $stringParam;
+            public string $stringParam;
             /**
              * @var array<int>
              */
-            private array $arrayParam;
+            public array $arrayParam;
             /**
              * And this one is an array map with description in class property phpdoc and
              * it has 2 lines of description.
              *
              * @var array<string,string>
              */
-            private array $stringMapParam;
+            public array $stringMapParam;
 
             /**
              * @param int                  $intParam       This parameter is an integer
@@ -50,10 +50,10 @@ class ParameterDescriptionParserTest extends TestCase
             }
         };
 
-        static::assertParameterDescription($configClass, 'intParam', 'This parameter is an integer');
-        static::assertParameterDescription($configClass, 'stringParam', 'Unlike previous parameter, this one is a string.');
-        static::assertParameterDescription($configClass, 'arrayParam', 'And this one is an array of integers');
-        static::assertParameterDescription($configClass, 'stringMapParam', 'And this one is an array map with description in class property phpdoc and it has 2 lines of description.');
+        self::assertParameterDescription($configClass, 'intParam', 'This parameter is an integer');
+        self::assertParameterDescription($configClass, 'stringParam', 'Unlike previous parameter, this one is a string.');
+        self::assertParameterDescription($configClass, 'arrayParam', 'And this one is an array of integers');
+        self::assertParameterDescription($configClass, 'stringMapParam', 'And this one is an array map with description in class property phpdoc and it has 2 lines of description.');
     }
 
     private static function assertParameterDescription(

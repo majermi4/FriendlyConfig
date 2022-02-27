@@ -104,7 +104,7 @@ class ArrayOfObjectsTypeTest extends ConfigurationTestCase
              */
             public function __construct(array $param)
             {
-                parent::__construct(...[$param ?? [new SingleParamConfig('bar')]]);
+                parent::__construct(...[$param]);
             }
         };
         $configValues = [

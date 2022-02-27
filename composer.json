@@ -23,9 +23,9 @@
         }
     ],
     "require-dev": {
-        "phpstan/phpstan": "^0.12.81",
-        "phpunit/phpunit": "^9.5",
-        "friendsofphp/php-cs-fixer": "^2.18"
+        "phpstan/phpstan": "^1.4.6",
+        "phpunit/phpunit": "^9.5.16",
+        "friendsofphp/php-cs-fixer": "^v2.19.3"
     },
     "scripts": {
         "analyse" : "vendor/bin/phpstan analyse -c phpstan.neon",

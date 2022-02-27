@@ -27,4 +27,4 @@ use Majermi4\FriendlyConfig\Attribute\ArrayKeyName;
         {
             return $this->param;
         }
-}
+    }

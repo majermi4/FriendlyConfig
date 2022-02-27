@@ -13,7 +13,7 @@ class ArrayKeyNameAttributeTest extends TestCase
     /**
      * Test that {@see ArrayKeyName} works and that it does not crash in PHP version older than v8.0.
      */
-    public function testArrayKeyNameAttribute() : void
+    public function testArrayKeyNameAttribute(): void
     {
         $configuredTreeBuilder = FriendlyConfiguration::fromClass(ArrayKeyNameAttributeTestConfig::class, 'test')->getConfigTreeBuilder();
 
