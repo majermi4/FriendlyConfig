@@ -17,6 +17,7 @@ class RegisterConfigService
     {
         $definition = new Definition($configClass, [$configClass, $processedConfig]);
         $definition->setFactory([InitializeConfigObject::class, 'fromProcessedConfig']);
+        $definition->setAutowired(true);
 
         $containerBuilder->setDefinition($configClass, $definition);
 
