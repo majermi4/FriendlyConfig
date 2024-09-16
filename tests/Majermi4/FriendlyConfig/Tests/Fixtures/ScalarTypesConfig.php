@@ -12,7 +12,7 @@ class ScalarTypesConfig extends BaseTestConfig
         int $integerProperty,
         string $stringProperty,
         float $floatProperty,
-        bool $boolProperty
+        bool $boolProperty,
     ) {
         parent::__construct(...func_get_args());
     }

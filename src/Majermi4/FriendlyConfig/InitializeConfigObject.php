@@ -7,7 +7,6 @@ namespace Majermi4\FriendlyConfig;
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use Majermi4\FriendlyConfig\PhpDocParser\ArrayItemTypeParser;
 use Majermi4\FriendlyConfig\Util\StringUtil;
-use ReflectionNamedType;
 
 class InitializeConfigObject
 {
@@ -42,7 +41,7 @@ class InitializeConfigObject
             }
 
             $parameterType = $parameter->getType();
-            if ($parameterType instanceof ReflectionNamedType) {
+            if ($parameterType instanceof \ReflectionNamedType) {
                 $parameterTypeName = $parameterType->getName();
             } else {
                 $parameterTypeName = ParameterTypes::MIXED;

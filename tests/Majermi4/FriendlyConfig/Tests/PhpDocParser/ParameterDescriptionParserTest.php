@@ -41,7 +41,7 @@ class ParameterDescriptionParserTest extends TestCase
                 int $intParam,
                 string $stringParam,
                 array $arrayParam,
-                array $stringMapParam
+                array $stringMapParam,
             ) {
                 $this->intParam = $intParam;
                 $this->stringParam = $stringParam;
@@ -59,7 +59,7 @@ class ParameterDescriptionParserTest extends TestCase
     private static function assertParameterDescription(
         object $configClass,
         string $parameterName,
-        string $expectedDescription
+        string $expectedDescription,
     ): void {
         $reflectionClass = new \ReflectionClass(get_class($configClass));
         /** @var \ReflectionMethod $constructor */

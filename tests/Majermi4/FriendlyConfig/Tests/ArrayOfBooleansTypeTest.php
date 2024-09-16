@@ -8,9 +8,6 @@ use Majermi4\FriendlyConfig\Tests\Util\BaseTestConfig;
 
 class ArrayOfBooleansTypeTest extends ConfigurationTestCase
 {
-    /**
-     * {@inheritDoc}
-     */
     public function validConfigurationProvider(): array
     {
         return [

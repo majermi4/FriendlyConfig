@@ -11,7 +11,6 @@ use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
-use ReflectionClass;
 
 class ArrayItemTypeParser
 {
@@ -32,7 +31,7 @@ class ArrayItemTypeParser
         }
 
         if (!ParameterTypes::isSupportedType($arrayItemType)) {
-            /** @var ReflectionClass<object> $classReflection */
+            /** @var \ReflectionClass<object> $classReflection */
             $classReflection = $parameter->getDeclaringClass();
             $arrayItemType = Reflection::expandClassName($arrayItemType, $classReflection);
         }

@@ -7,12 +7,10 @@ namespace Majermi4\FriendlyConfig\PhpDocParser;
 use Majermi4\FriendlyConfig\Exception\InvalidConfigClassException;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
-use ReflectionClass;
-use ReflectionParameter;
 
 class ParameterDescriptionParser
 {
-    public static function getParameterDescription(ReflectionParameter $constructorParameter): ?string
+    public static function getParameterDescription(\ReflectionParameter $constructorParameter): ?string
     {
         $constructorDocCommentParamDescription = self::getConstructorDocCommentDescription($constructorParameter);
 
@@ -23,7 +21,7 @@ class ParameterDescriptionParser
         return self::getPropertyDocCommentDescription($constructorParameter);
     }
 
-    private static function getConstructorDocCommentDescription(ReflectionParameter $constructorParameter): ?string
+    private static function getConstructorDocCommentDescription(\ReflectionParameter $constructorParameter): ?string
     {
         try {
             $parameterTypeNode = PhpDocParser::getParameterPhpDocNode($constructorParameter);
@@ -37,9 +35,9 @@ class ParameterDescriptionParser
         return $parameterTypeNodeValue->description;
     }
 
-    private static function getPropertyDocCommentDescription(ReflectionParameter $constructorParameter): ?string
+    private static function getPropertyDocCommentDescription(\ReflectionParameter $constructorParameter): ?string
     {
-        /** @var ReflectionClass<object> $declaringClass */
+        /** @var \ReflectionClass<object> $declaringClass */
         $declaringClass = $constructorParameter->getDeclaringClass();
 
         try {

@@ -9,7 +9,7 @@ use ArrayAccess;
 /**
  * @implements ArrayAccess<string,mixed>
  */
-class BaseTestConfig implements ArrayAccess
+class BaseTestConfig implements \ArrayAccess
 {
     /**
      * @var array<string,mixed>

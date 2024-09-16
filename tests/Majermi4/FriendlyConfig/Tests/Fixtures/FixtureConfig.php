@@ -13,9 +13,9 @@ class FixtureConfig extends BaseTestConfig
      */
     public function __construct(
         int $integerProperty = 5,
-        ScalarTypesConfig $scalarTypesConfig = null,
+        ?ScalarTypesConfig $scalarTypesConfig = null,
         array $scalarTypesConfigs = [],
-        ?int $nullableIntegerProperty = null
+        ?int $nullableIntegerProperty = null,
     ) {
         parent::__construct(...func_get_args());
     }

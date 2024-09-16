@@ -12,7 +12,7 @@ class InvalidConfigClassTest extends TestCase
 {
     public function testConfigClassWithMissingConstructor(): void
     {
-        $configObject = new class() {};
+        $configObject = new class {};
 
         static::expectException(InvalidConfigClassException::class);
         static::expectExceptionCode(InvalidConfigClassException::MISSING_CONSTRUCTOR);
@@ -22,7 +22,7 @@ class InvalidConfigClassTest extends TestCase
 
     public function testConfigClassWithMissingConstructorParameters(): void
     {
-        $configObject = new class() {
+        $configObject = new class {
             public function __construct()
             {
             }

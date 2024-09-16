@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Majermi4\FriendlyConfig\Exception;
 
 use Majermi4\FriendlyConfig\ParameterTypes;
-use ReflectionParameter;
-use RuntimeException;
 
-class InvalidConfigClassException extends RuntimeException
+class InvalidConfigClassException extends \RuntimeException
 {
     public const MISSING_CONSTRUCTOR = 1;
     public const MISSING_CONSTRUCTOR_PARAMETERS = 2;
@@ -62,7 +60,7 @@ class InvalidConfigClassException extends RuntimeException
         );
     }
 
-    public static function unsupportedConstructorParameterType(ReflectionParameter $parameter): self
+    public static function unsupportedConstructorParameterType(\ReflectionParameter $parameter): self
     {
         /* @phpstan-ignore-next-line */
         $className = $parameter->getDeclaringClass()->getName();
@@ -81,7 +79,7 @@ class InvalidConfigClassException extends RuntimeException
         );
     }
 
-    public static function unsupportedNestedArrayType(ReflectionParameter $parameter, string $nestedType): self
+    public static function unsupportedNestedArrayType(\ReflectionParameter $parameter, string $nestedType): self
     {
         /* @phpstan-ignore-next-line */
         $className = $parameter->getDeclaringClass()->getName();

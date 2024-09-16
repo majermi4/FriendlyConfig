@@ -9,9 +9,6 @@ use Majermi4\FriendlyConfig\Tests\Util\BaseTestConfig;
 
 class ObjectTypeTest extends ConfigurationTestCase
 {
-    /**
-     * {@inheritDoc}
-     */
     public function validConfigurationProvider(): array
     {
         return [
@@ -86,7 +83,7 @@ class ObjectTypeTest extends ConfigurationTestCase
     public function objectWithDefault(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {
-            public function __construct(SingleParamConfig $param = null)
+            public function __construct(?SingleParamConfig $param = null)
             {
                 parent::__construct(...[$param ?? new SingleParamConfig('bar')]);
             }
@@ -121,7 +118,7 @@ class ObjectTypeTest extends ConfigurationTestCase
     public function objectWithDefaultOmitted(): array
     {
         $configObject = new class(new SingleParamConfig('foo')) extends BaseTestConfig {
-            public function __construct(SingleParamConfig $param = null)
+            public function __construct(?SingleParamConfig $param = null)
             {
                 parent::__construct(...[$param ?? new SingleParamConfig('foo')]);
             }

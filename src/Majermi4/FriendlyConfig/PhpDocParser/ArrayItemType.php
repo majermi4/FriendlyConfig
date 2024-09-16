@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Majermi4\FriendlyConfig\PhpDocParser;
 
-use RuntimeException;
-
 /**
  * Used to communicate array key/item type information.
  */
@@ -17,7 +15,7 @@ class ArrayItemType
     public function __construct(string $keyType, string $valueType)
     {
         if (!in_array($keyType, ['string', 'int'])) {
-            throw new RuntimeException('$keyType must be either string or int. "'.$keyType.'" given.');
+            throw new \RuntimeException('$keyType must be either string or int. "'.$keyType.'" given.');
         }
 
         $this->keyType = $keyType;

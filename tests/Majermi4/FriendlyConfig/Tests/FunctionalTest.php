@@ -9,9 +9,6 @@ use Majermi4\FriendlyConfig\Tests\Fixtures\ScalarTypesConfig;
 
 class FunctionalTest extends ConfigurationTestCase
 {
-    /**
-     * {@inheritDoc}
-     */
     public function validConfigurationProvider(): array
     {
         return [
